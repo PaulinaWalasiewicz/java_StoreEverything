@@ -93,27 +93,4 @@ public class NoteController {
         return notes;
     }
 
-
-//    // Endpoint to retrieve all notes from all users, filtered by current date
-//    @GetMapping("/fromToday")
-//    public List<Note> getNotesFromToday() {
-//        LocalDate date = LocalDate.now();
-//        LocalDateTime dt = LocalDateTime.now();
-//        System.out.println(date);
-//        List<Note> notes = noteRepository.findByCreatedAt_Date(dt);
-//        System.out.println(notes);
-//        return notes;
-//    }
-
-//    @GetMapping("/mostPopularCategory")
-//    public  List<Note> getMPC(){
-//
-////        MongoTemplate mongoTemplate = new MongoTemplate(mongoDbFactory);
-////
-////        GroupOperation groupOperation = Aggregation.group("category.name").count().as("count");
-////        Aggregation aggregation = Aggregation.newAggregation(groupOperation);
-////
-////        AggregationResults<Document> result = mongoTemplate.aggregate(aggregation, "notes", Document.class);
-////        List<Document> categoryCounts = result.getMappedResults();
-//    }
 }
