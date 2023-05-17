@@ -10,6 +10,9 @@ public interface CategoryRepository extends MongoRepository<Category,String> {
 
     @Query("{'id': ?0}")
     Category findCategoryById(Integer id);
+
+    Category findAllByOrderByNameAsc();
+    Category findAllByOrderByNameDesc();
     public long count();
 
 }
