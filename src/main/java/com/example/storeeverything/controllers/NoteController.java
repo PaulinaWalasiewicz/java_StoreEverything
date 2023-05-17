@@ -8,10 +8,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.GroupOperation;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -25,6 +22,29 @@ public class NoteController {
     @Autowired
     NoteRepository noteRepository;
 
+    //create Note
+//    @PostMapping("/create");
+//    public Note newNote(@RequestBody Note newNote) {
+//        Note newNote = new Note();
+//        response.setId(inputPayload.getId()*100);
+//        response.setMessage("Hello " + inputPayload.getName());
+//        response.setExtra("Some text");
+//        return response;
+//        return noteRepository.save(newNote);
+//    }
+
+    //Endpoint to get all notes
+    @GetMapping("/all")
+    public List<Note> getAllNotes(){
+        List<Note> notes = noteRepository.findAll();
+        return notes;
+    }
+    //Endpoint to get notes per user
+    @GetMapping("/user/{userId}")
+    public List<Note> getUserNotes(@PathVariable Integer userId){
+        List<Note> notes = noteRepository.findByUserId(userId);
+        return notes;
+    }
 
     // Endpoint to retrieve notes for a user, sorted by category quantity in descending order
     @GetMapping("/user/{userId}/category/{categoryId}")
