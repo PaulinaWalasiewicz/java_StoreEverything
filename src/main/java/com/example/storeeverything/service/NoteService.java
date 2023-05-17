@@ -32,6 +32,9 @@ public class NoteService implements CommandLineRunner {
         noteRepository.findAll().forEach(note -> System.out.println(note.getTitle()));
 
     }
+    public void createNote(){
+        noteRepository.save(new Note())
+    }
     @Override
     public void run(String... args) throws Exception {
                 System.out.println("-------------CREATE GROCERY ITEMS------\n");
