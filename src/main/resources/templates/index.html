@@ -10,7 +10,7 @@
         <table border ="2" style="color: black">
             <tr style="color: black">
                 <th><a th:href="@{'/notes/?user_id=1&sort=date&sortDir='+${checkDirection}}">Date</a></th>
-                <th><a th:href="@{'/notes/2?user_id=1&sort=category&sortDir='+${checkDirection}}">Category</a></th>
+                <th><a th:href="@{'/notes/?user_id=1&sort=category&sortDir='+${checkDirection}}">Category</a></th>
                 <th><a th:href="@{'/notes/?user_id=1&sort=title&sortDir='+${checkDirection}}">Title</a></th>
                 <th>Content</th>
 
