@@ -13,9 +13,9 @@ public class CategoryService implements CommandLineRunner {
 
     public void createCategories(){
         System.out.println("Data creation started...");
-        categoryRepository.save(new Category(1,"Home"));
-        categoryRepository.save(new Category(2,"School"));
-        categoryRepository.save(new Category(3,"Work"));
+        categoryRepository.save(new Category("1","Home"));
+        categoryRepository.save(new Category("2","School"));
+        categoryRepository.save(new Category("3","Work"));
         System.out.println("Data creation complete...");
 
     }
@@ -26,7 +26,7 @@ public class CategoryService implements CommandLineRunner {
     }
     @Override
     public void run(String... args) throws Exception {
-        System.out.println("-------------CREATE GROCERY ITEMS------\n");
+//        System.out.println("-------------CREATE GROCERY ITEMS------\n");
 //        createCategories();
 //
 //        System.out.println("\n------------SHOW ALL GROCERY ITEMS---\n");

@@ -10,11 +10,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document("category")
 public class Category {
     @Id
-    private Integer id;
+    private String id;
 
     private String name;
 
-    public Category(Integer id, String name) {
+    public Category(String id, String name) {
         super();
         this.id = id;
         this.name = name;

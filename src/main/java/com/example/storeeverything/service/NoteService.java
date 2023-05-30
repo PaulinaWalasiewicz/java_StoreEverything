@@ -22,9 +22,9 @@ public class NoteService implements CommandLineRunner {
 
     public void createNotes(){
         System.out.println("Data creation started...");
-        noteRepository.save(new Note(1, LocalDateTime.now(),"title1","test for note 1",categoryRepository.findCategoryByName("Home"),userRepository.findUserByUsername("User01")));
-        noteRepository.save(new Note(2, LocalDateTime.now(),"title2","test for note 2",categoryRepository.findCategoryByName("School"),userRepository.findUserByUsername("User01")));
-        noteRepository.save(new Note(3, LocalDateTime.now(),"title3","test for note 3",categoryRepository.findCategoryByName("Home"),userRepository.findUserByUsername("User01")));
+        noteRepository.save(new Note("1", LocalDateTime.now(),"title1","test for note 1",categoryRepository.findCategoryByName("Home"),userRepository.findUserById("1")));
+        noteRepository.save(new Note("2", LocalDateTime.now(),"title2","test for note 2",categoryRepository.findCategoryByName("School"),userRepository.findUserById("1")));
+        noteRepository.save(new Note("3", LocalDateTime.now(),"title3","test for note 3",categoryRepository.findCategoryByName("Home"),userRepository.findUserById("1")));
         System.out.println("Data creation complete...");
     }
 
@@ -34,10 +34,10 @@ public class NoteService implements CommandLineRunner {
     }
     @Override
     public void run(String... args) throws Exception {
-                System.out.println("-------------CREATE GROCERY ITEMS------\n");
-        createNotes();
-
-        System.out.println("\n------------SHOW ALL GROCERY ITEMS---\n");
-        showAllNotes();
+//                System.out.println("-------------CREATE GROCERY ITEMS------\n");
+//        createNotes();
+//
+//        System.out.println("\n------------SHOW ALL GROCERY ITEMS---\n");
+//        showAllNotes();
     }
 }

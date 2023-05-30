@@ -1,5 +1,7 @@
 package com.example.storeeverything.controllers;
+import com.example.storeeverything.Repository.CategoryRepository;
 import com.example.storeeverything.Repository.NoteRepository;
+import com.example.storeeverything.Repository.UserRepository;
 import com.example.storeeverything.data.Category;
 import com.example.storeeverything.data.Note;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -16,16 +19,21 @@ import java.util.stream.Collectors;
 public class NoteController {
     @Autowired
     NoteRepository noteRepository;
+    @Autowired
+    CategoryRepository categoryRepository;
+
+    @Autowired
+    UserRepository userRepository;
 
     @GetMapping("/")
     public String index(Model model){
-        return sortedView(model,1,"date","asc");
+        return sortedView(model,"1","date","asc");
     }
 
 
 
     @GetMapping("/notes/")
-    public String sortedView(Model model,@RequestParam(value = "user_id") Integer user_id, @RequestParam(value = "sort",defaultValue ="title") String sort, @RequestParam(value = "sortDir",defaultValue = "asc") String sortDir){
+    public String sortedView(Model model,@RequestParam(value = "user_id") String user_id, @RequestParam(value = "sort",defaultValue ="title") String sort, @RequestParam(value = "sortDir",defaultValue = "asc") String sortDir){
 
         List<Note> notes = new ArrayList();
         if(sort.equals("title")) {
@@ -83,27 +91,37 @@ public class NoteController {
         return "index";
     }
 
-    @PostMapping("/addNote")
+    @GetMapping("/addNote")
     public  String addNote(){
-        return "addNote";
+        return "addnewnote";
     }
 
     @PostMapping("/saveNote")
     public String savenote(@ModelAttribute Note note){
+
+        //TODO
+        if(note.getCategory() == null){
+            note.setCategory(categoryRepository.findCategoryByName("Home"));
+        }
+        note.setCreatedAt(LocalDateTime.now());
+        if(note.getUser() == null){
+            note.setUser(userRepository.findUserById("1"));
+        }
+
         noteRepository.save(note);
         return "redirect:/";
     }
 
     @RequestMapping("/updateNote/{id}")
     public String updateNote(@PathVariable("id") String id,Model model){
-        Note returnedNote = noteRepository.findById(id).get();
+        Note returnedNote = noteRepository.findNoteById(id);
         model.addAttribute("any",returnedNote);
         return "updateNote";
 
     }
     @RequestMapping("/deleteNote/{id}")
-    public String deleteNotey(@PathVariable String id){
-        noteRepository.delete(noteRepository.findById(id).get());
+    public String deleteNote(@PathVariable String id){
+        noteRepository.delete(noteRepository.findNoteById(id));
         return "redirect:/";
     }
 }

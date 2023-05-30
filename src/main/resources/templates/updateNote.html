@@ -1,0 +1,43 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no,
+initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Note Home Page</title>
+</head>
+<body style="background: #b3b3cc">
+<div>
+  <center >
+    <h1 style="color:white">Notes</h1>
+    <a style="color:green" href="/">See All Notes</a>
+    <form , method="post" th:action="@{/saveNote}" th:object="${any}">
+      <h3>Updating Note</h3>
+      <input type="hidden" name="id" th:value="${any.id}">
+      <table style="color: black">
+
+        <tr><th>Update title</th>
+          <th><input type ="text"placeholder="enter  title" name="title"
+                     th:value="${any.title}"></th></tr>
+
+        <tr><th>Update text</th>
+          <th><input type ="text"placeholder="enter text" name="content"
+                     th:value="${any.content}"></th></tr>
+        <tr><th>Update Category</th>
+          <th><input type ="text"placeholder="enter category" name="category"
+                   th:value="${any.category}"></th></tr>
+        <tr><th>Update date</th>
+          <th><input type ="datetime-local"placeholder="enter date" name="createdAt"
+                     th:value="${any.createdAt}"></th></tr>
+
+        <tr><th><button type="submit">Update</button></th></tr>
+
+      </table>
+    </form>
+  </center>
+</div>
+
+</body>
+</html>
