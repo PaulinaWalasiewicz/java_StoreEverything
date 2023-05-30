@@ -39,28 +39,29 @@ public class CategoryController {
         model.addAttribute("checkDirection",checkDirection);
         return "categories";
     }
-    @PostMapping("/addCategory")
+    @GetMapping("/addCategory")
     public  String addCategory(){
-        return "addCategory";
+        return "addnewcategory";
     }
 
     @PostMapping("/saveCategory")
     public String saveCategory(@ModelAttribute Category category){
         categoryRepository.save(category);
-        return "redirect:/";
+        return "redirect:/categories";
     }
 
-    @RequestMapping("/updateCategory/{id}")
-    public String updateCategory(@PathVariable("id") String id,Model model){
-        Category returnedCategory = categoryRepository.findById(id).get();
-        model.addAttribute("any",returnedCategory);
-        return "updateCategory";
-
-    }
-    @RequestMapping("/deleteCategroy/{id}")
+//    @RequestMapping("/updateCategory/{id}")
+//    public String updateCategory(@PathVariable("id") Integer id,Model model){
+//        Category returnedCategory = categoryRepository.findCategoryById(id);
+//        model.addAttribute("any",returnedCategory);
+//        return "updateCategory";
+//
+//    }
+    @RequestMapping("/deleteCategory/{id}")
     public String deleteCategory(@PathVariable String id){
-        categoryRepository.delete(categoryRepository.findById(id).get());
-        return "redirect:/";
+        Category c = categoryRepository.findCategoryById(id);
+        categoryRepository.delete(categoryRepository.findCategoryById(id));
+        return "redirect:/categories";
     }
 
 }

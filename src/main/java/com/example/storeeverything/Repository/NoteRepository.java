@@ -16,19 +16,17 @@ public interface NoteRepository extends MongoRepository<Note,String> {
 
     public long count();
 
-    List<Note> findByUserIdOrderByCreatedAtAsc(Integer userId);
+    List<Note> findByUserIdOrderByCreatedAtAsc(String userId);
 
-    List<Note> findByUserIdOrderByCreatedAtDesc(Integer userId);
-    List<Note> findByUserIdAndAndCategory_Id(Integer userId,Integer categoryId);
+    List<Note> findByUserIdOrderByCreatedAtDesc(String userId);
+    List<Note> findByUserIdAndAndCategory_Id(String userId,String categoryId);
 
-    List<Note> findByUserId(Integer userId);
+    Note findNoteById(String id);
+    List<Note> findByUserOrderByTitleDesc(String userId);
+    List<Note> findByUserOrderByTitleAsc(String userId);
 
-    List<Note> findByUserOrderByTitleDesc(Integer userId);
-    List<Note> findByUserOrderByTitleAsc(Integer userId);
-
-
-    List<Note> findByUserOrderByCategoryDesc(Integer userId);
-    List<Note> findByUserOrderByCategoryAsc(Integer userId);
+    List<Note> findByUserOrderByCategoryDesc(String userId);
+    List<Note> findByUserOrderByCategoryAsc(String userId);
 
 //    List<Note> findByCreatedAtDate(LocalDateTime createdAt_date);
 

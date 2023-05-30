@@ -7,6 +7,8 @@
 <div>
     <center >
         <h1 style="color:white">Your Notes</h1>
+        <a style="color:green" th:href="@{/addNote}">Add New Note</a><br><br>
+
         <table border ="2" style="color: black">
             <tr style="color: black">
                 <th><a th:href="@{'/notes/?user_id=1&sort=date&sortDir='+${checkDirection}}">Date</a></th>
@@ -24,8 +26,8 @@
                 <th>
                     <table>
                         <tr>
-                            <td><a style="color:blue" th:href="@{/update/{id} (id=${n.id})}">Update</a></td>
-                            <td><a style="color:red" th:href="@{/delete/{id} (id=${n.id})}">Delete</a></td>
+                            <td><a style="color:blue" th:href="@{/updateNote/{id} (id=${n.id})}">Update</a></td>
+                            <td><a style="color:red" th:href="@{/deleteNote/{id} (id=${n.id})}">Delete</a></td>
                         </tr>
                     </table>
                 </th>

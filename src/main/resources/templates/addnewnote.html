@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no,
+initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <style>
+    body{
+
+    }
+  </style>
+</head>
+<body style="background: #b3b3cc">
+<div>
+  <center >
+    <h1 style="color:white">New Note</h1>
+    <a style="color:green" href="/">See All Notes</a><br><br>
+    <form method="post", th:action="@{/saveNote}">
+      <h3>Adding a note</h3>
+      <table style="color: black">
+        <tr><th>Title</th>
+          <th><input type ="text"placeholder="enter title for note" name="title"></th></tr>
+        <tr><th>Category</th>
+          <th><input type ="text"placeholder="enter category" name="category"></th></tr>
+        <tr><th>Description</th>
+          <th><input type ="text"placeholder="enter text" name="content"></th></tr>
+        <tr><th><button type="submit">Add</button></th></tr>
+      </table>
+    </form>
+  </center>
+</div>
+
+</body>
+</html>

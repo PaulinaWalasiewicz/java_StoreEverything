@@ -14,8 +14,8 @@ public class UserService implements CommandLineRunner {
 
     public void createUsers(){
         System.out.println("Data creation started...");
-        userRepository.save(new User(1,"User01","password1"));
-        userRepository.save(new User(2,"User02","password2"));
+        userRepository.save(new User("1","User01","password1"));
+        userRepository.save(new User("2","User02","password2"));
 
 
         System.out.println("Data creation complete...");

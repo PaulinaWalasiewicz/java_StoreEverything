@@ -7,6 +7,8 @@
 <div>
     <center >
         <h1 style="color:white">All Categories</h1>
+        <a style="color:green" th:href="@{/addCategory}">Add New Category</a><br><br>
+
         <table border ="2" style="color: black">
             <tr style="color: black">
                 <th><a th:href="@{'/categories/s/?&sortDir='+${checkDirection}}">Name</a></th>
@@ -20,8 +22,8 @@
                 <th>
                     <table>
                         <tr>
-                            <td><a style="color:blue" th:href="@{/update/{id} (id=${c.id})}">Update</a></td>
-                            <td><a style="color:red" th:href="@{/delete/{id} (id=${c.id})}">Delete</a></td>
+<!--                            <td><a style="color:blue" th:href="@{/update/{id} (id=${c.id})}">Update</a></td>-->
+                            <td><a style="color:red" th:href="@{/deleteCategory/{id} (id=${c.id})}">Delete</a></td>
                         </tr>
                     </table>
                 </th>
