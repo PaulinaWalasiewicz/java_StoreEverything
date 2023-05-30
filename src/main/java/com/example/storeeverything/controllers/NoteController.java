@@ -1,11 +1,11 @@
 package com.example.storeeverything.controllers;
 import com.example.storeeverything.Repository.NoteRepository;
+import com.example.storeeverything.data.Category;
 import com.example.storeeverything.data.Note;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.*;
@@ -81,5 +81,29 @@ public class NoteController {
         model.addAttribute("checkDirection",checkDirection);
 
         return "index";
+    }
+
+    @PostMapping("/addNote")
+    public  String addNote(){
+        return "addNote";
+    }
+
+    @PostMapping("/saveNote")
+    public String savenote(@ModelAttribute Note note){
+        noteRepository.save(note);
+        return "redirect:/";
+    }
+
+    @RequestMapping("/updateNote/{id}")
+    public String updateNote(@PathVariable("id") String id,Model model){
+        Note returnedNote = noteRepository.findById(id).get();
+        model.addAttribute("any",returnedNote);
+        return "updateNote";
+
+    }
+    @RequestMapping("/deleteNote/{id}")
+    public String deleteNotey(@PathVariable String id){
+        noteRepository.delete(noteRepository.findById(id).get());
+        return "redirect:/";
     }
 }

@@ -20,6 +20,10 @@ public class Category {
         this.name = name;
     }
 
+    public Category() {
+
+    }
+
     public String getName() {
         return name;
     }

@@ -7,8 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,4 +39,28 @@ public class CategoryController {
         model.addAttribute("checkDirection",checkDirection);
         return "categories";
     }
+    @PostMapping("/addCategory")
+    public  String addCategory(){
+        return "addCategory";
+    }
+
+    @PostMapping("/saveCategory")
+    public String saveCategory(@ModelAttribute Category category){
+        categoryRepository.save(category);
+        return "redirect:/";
+    }
+
+    @RequestMapping("/updateCategory/{id}")
+    public String updateCategory(@PathVariable("id") String id,Model model){
+        Category returnedCategory = categoryRepository.findById(id).get();
+        model.addAttribute("any",returnedCategory);
+        return "updateCategory";
+
+    }
+    @RequestMapping("/deleteCategroy/{id}")
+    public String deleteCategory(@PathVariable String id){
+        categoryRepository.delete(categoryRepository.findById(id).get());
+        return "redirect:/";
+    }
+
 }
