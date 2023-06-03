@@ -92,7 +92,9 @@ public class NoteController {
     }
 
     @GetMapping("/addNote")
-    public  String addNote(){
+    public  String addNote(Model model){
+        List<Category> categories = categoryRepository.findAll();
+        model.addAttribute("categories",categories);
         return "addnewnote";
     }
 

@@ -12,7 +12,7 @@ initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     }
   </style>
 </head>
-<body style="background: #b3b3cc">
+<body style="background: #ffffff">
 <div>
   <center >
     <h1 style="color:white">New Note</h1>
@@ -22,8 +22,13 @@ initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
       <table style="color: black">
         <tr><th>Title</th>
           <th><input type ="text"placeholder="enter title for note" name="title"></th></tr>
-        <tr><th>Category</th>
-          <th><input type ="text"placeholder="enter category" name="category"></th></tr>
+        <tr>
+        <span>
+          <select class="form-select form-select-lg mb-md-3" name="category">
+            <option value="*">select category</option>
+            <option th:each="option : ${categories}" th:value="${option}" th:text="${option.getName()}"></option>
+          </select>
+        </span>
         <tr><th>Description</th>
           <th><input type ="text"placeholder="enter text" name="content"></th></tr>
         <tr><th><button type="submit">Add</button></th></tr>
