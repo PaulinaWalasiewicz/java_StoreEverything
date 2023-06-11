@@ -88,7 +88,7 @@ public class NoteController {
         String checkDirection = sortDir.equals("asc") ?"desc":"asc";
         model.addAttribute("checkDirection",checkDirection);
 
-        return "index";
+        return "index1";
     }
 
     @GetMapping("/addNote")
@@ -112,14 +112,14 @@ public class NoteController {
         return "redirect:/";
     }
 
-    @RequestMapping("/updateNote/{id}")
+    @PostMapping ("/updateNote/{id}")
     public String updateNote(@PathVariable("id") String id,Model model){
         Note returnedNote = noteRepository.findNoteById(id);
         model.addAttribute("any",returnedNote);
-        return "updateNote";
+        return "redirect:/";
 
     }
-    @RequestMapping("/deleteNote/{id}")
+    @PostMapping("/deleteNote/{id}")
     public String deleteNote(@PathVariable String id){
         noteRepository.delete(noteRepository.findNoteById(id));
         return "redirect:/";

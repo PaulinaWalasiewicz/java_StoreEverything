@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Store Everything</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round|Open+Sans">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css"></script>
+
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+  <style>
+    body {
+      color: #404E67;
+      background: #F5F7FA;
+      font-family: 'Open Sans', sans-serif;
+    }
+
+    .table-wrapper {
+      width: 700px;
+      margin: 30px auto;
+      background: #fff;
+      padding: 20px;
+      box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
+    }
+
+    .table-title {
+      padding-bottom: 10px;
+      margin: 0 0 10px;
+    }
+
+    .table-title h2 {
+      margin: 6px 0 0;
+      font-size: 22px;
+    }
+
+    .table-title .add-new {
+      float: right;
+      height: 30px;
+      font-weight: bold;
+      font-size: 12px;
+      text-shadow: none;
+      min-width: 100px;
+      border-radius: 50px;
+      line-height: 13px;
+    }
+
+    .table-title .add-new i {
+      margin-right: 4px;
+    }
+
+    table.table {
+      table-layout: fixed;
+    }
+
+    table.table tr th,
+    table.table tr td {
+      border-color: #e9e9e9;
+      align-items: center;
+    }
+
+    table.table th i {
+      font-size: 13px;
+      margin: 0 2px;
+      cursor: pointer;
+    }
+
+    table.table th:last-child {
+      width: 100px;
+    }
+
+    table.table td a {
+      cursor: pointer;
+      display: inline-block;
+      margin: 0 5px;
+      min-width: 24px;
+    }
+
+    table.table td a.add {
+      color: #27C46B;
+    }
+
+    table.table td i {
+      font-size: 19px;
+    }
+
+    table.table td a.add i {
+      font-size: 24px;
+      margin-right: -1px;
+      position: relative;
+      top: 3px;
+    }
+
+    table.table .form-control {
+      height: 32px;
+      line-height: 32px;
+      box-shadow: none;
+      border-radius: 2px;
+    }
+
+    table.table .form-control.error {
+      border-color: #f50000;
+    }
+
+    .edit {
+      border-radius: 100%;
+    }
+    .delete {
+      border-radius: 100%;
+    }
+    .datepicker td, .datepicker th {
+      width: 2.5rem;
+      height: 2.5rem;
+      font-size: 0.85rem;
+    }
+
+    .datepicker {
+      margin-bottom: 3rem;
+    }
+    .input-group {
+      border-radius: 30rem;
+    }
+
+    input.form-control {
+      border-radius: 30rem 0 0 30rem;
+      border: none;
+    }
+
+    input.form-control:focus {
+      box-shadow: none;
+    }
+
+    input.form-control::placeholder {
+      font-style: italic;
+    }
+
+    .input-group-text {
+      border-radius: 0 30rem 30rem 0;
+      border: none;
+    }
+    .datepicker-dropdown {
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+<body>
+<div class="container-lg">
+  <div class="table-responsive">
+    <div class="table-wrapper">
+      <div class="table-title">
+
+        <div class="row">
+          <div class="col-sm-8">
+            <h2><b>Notes</b></h2>
+          </div>
+
+          <div class="col-sm-4">
+            <button type="button" class="btn btn-info add-new" data-toggle="modal" data-target="#myModal">
+              <i class="fa fa-plus"></i> Add New
+            </button>
+
+          </div>
+        </div>
+      </div>
+      <table class="table table-bordered">
+        <thead>
+        <tr>
+          <th>Title</th>
+          <th>Date</th>
+          <th>Category</th>
+          <th>Description</th>
+          <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="n:${any}">
+          <td th:text="${n.title}"></td>
+          <td th:text="${n.createdAt}"></td>
+          <td th:text="${n.category.name}"></td>
+          <td th:text="${n.content}"></td>
+          <td>
+            <form th:object="${n}" th:action="@{/updateNote/{id}(id=${n.id})}" method="post">
+              <button type="submit" class="btn btn-info edit" title="Edit" >
+                <i class="material-icons">&#xE254;</i>
+              </button>
+            </form>
+            <form th:action="@{/deleteNote/{id}(id=${n.id})}" method="post">
+              <button type="submit" class="btn btn-danger delete" title="Delete">
+                <i class="material-icons">&#xE872;</i>
+              </button>
+            </form>
+          </td>
+
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add new note</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form method="post", th:action="@{/saveNote}">
+        <input type ="text"placeholder="enter title for note" name="title" class="form-control">
+                <br>
+            <select class="form-control">
+              <option value="0">Choose category</option>
+              <option th:each="c:${categories}" th:value="${c.id}" th:text="${c.name}"></option>
+            </select>
+          <br>
+        <input type ="text"placeholder="enter description" name="content" class="form-control">
+          <br>
+          <button type="submit" class="btn btn-info" style="object-position: right">Add</button>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<script>
+  $(function () {
+    $("#datetimepicker").datetimepicker({});
+  });
+
+</script>
+</body>
+</html>

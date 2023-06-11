@@ -20,10 +20,9 @@ public class Category {
         this.name = name;
     }
 
-    public Category() {
-
+    public String getId() {
+        return id;
     }
-
     public String getName() {
         return name;
     }

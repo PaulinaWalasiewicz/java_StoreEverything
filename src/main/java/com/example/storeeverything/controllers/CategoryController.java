@@ -37,7 +37,7 @@ public class CategoryController {
         model.addAttribute("sortDir",sortDir);
         String checkDirection = sortDir.equals("asc") ?"desc":"asc";
         model.addAttribute("checkDirection",checkDirection);
-        return "categories";
+        return "index1";
     }
     @GetMapping("/addCategory")
     public  String addCategory(){
