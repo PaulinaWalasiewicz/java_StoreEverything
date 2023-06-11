@@ -19,13 +19,10 @@ public class Note {
     private LocalDateTime createdAt;
     private String title;
     private String content;
-
-
-
     @DBRef
     private Category category;
     @DBRef
     private  User user;
 
-
+    private String link;
 }

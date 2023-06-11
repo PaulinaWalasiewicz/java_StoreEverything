@@ -7,7 +7,6 @@ import org.springframework.data.mongodb.repository.Query;
 import java.util.Optional;
 
 public interface CategoryRepository extends MongoRepository<Category,String> {
-    @Query("{ 'name' : ?0 }")
     Category findCategoryByName(String name);
 
     @Query("{'id': ?0}")
