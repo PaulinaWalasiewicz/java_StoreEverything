@@ -88,7 +88,7 @@ public class NoteController {
         String checkDirection = sortDir.equals("asc") ?"desc":"asc";
         model.addAttribute("checkDirection",checkDirection);
 
-        return "index";
+        return "index1";
     }
 
     @GetMapping("/addNote")
