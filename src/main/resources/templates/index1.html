@@ -3,9 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Bootstrap Table with Add and Delete Row Feature</title>
+  <title>Store Everything</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round|Open+Sans">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css"></script>
+
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
   <style>
     body {
       color: #404E67;
@@ -53,11 +62,12 @@
     table.table tr th,
     table.table tr td {
       border-color: #e9e9e9;
+      align-items: center;
     }
 
     table.table th i {
       font-size: 13px;
-      margin: 0 5px;
+      margin: 0 2px;
       cursor: pointer;
     }
 
@@ -74,14 +84,6 @@
 
     table.table td a.add {
       color: #27C46B;
-    }
-
-    table.table td a.edit {
-      color: #FFC107;
-    }
-
-    table.table td a.delete {
-      color: #E34724;
     }
 
     table.table td i {
@@ -106,21 +108,49 @@
       border-color: #f50000;
     }
 
-    table.table td .add {
-      display: none;
+    .edit {
+      border-radius: 100%;
+    }
+    .delete {
+      border-radius: 100%;
+    }
+    .datepicker td, .datepicker th {
+      width: 2.5rem;
+      height: 2.5rem;
+      font-size: 0.85rem;
+    }
+
+    .datepicker {
+      margin-bottom: 3rem;
+    }
+    .input-group {
+      border-radius: 30rem;
+    }
+
+    input.form-control {
+      border-radius: 30rem 0 0 30rem;
+      border: none;
+    }
+
+    input.form-control:focus {
+      box-shadow: none;
+    }
+
+    input.form-control::placeholder {
+      font-style: italic;
+    }
+
+    .input-group-text {
+      border-radius: 0 30rem 30rem 0;
+      border: none;
+    }
+    .datepicker-dropdown {
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
     }
   </style>
 </head>
 <body>
 <div class="container-lg">
-  <div id="popup-form" style="display: none;">
-    <h2>Add Note</h2>
-    <form id="note-form" th:action="@{/saveNote}" method="post">
-      <input type="text" name="title" placeholder="Title" required/>
-      <input type="text" name="description" placeholder="Description" required/>
-      <button type="submit">Save</button>
-    </form>
-  </div>
   <div class="table-responsive">
     <div class="table-wrapper">
       <div class="table-title">
@@ -131,14 +161,10 @@
           </div>
 
           <div class="col-sm-4">
-            <button type="button" class="btn btn-info add-new" th:data-toggle="tooltip"
-                    data-placement="top" title="Add New" onclick='function openPopup() {
-                      var popup = document.getElementById("popup-form");
-                        popup.style.display = "block";
-                    }
-                    openPopup()'>
+            <button type="button" class="btn btn-info add-new" data-toggle="modal" data-target="#myModal">
               <i class="fa fa-plus"></i> Add New
             </button>
+
           </div>
         </div>
       </div>
@@ -159,96 +185,58 @@
           <td th:text="${n.category.name}"></td>
           <td th:text="${n.content}"></td>
           <td>
-            <a class="add" th:data-toggle="tooltip" data-placement="top" title="Add">
-              <i class="material-icons">&#xE03B;</i>
-            </a>
-            <a class="edit" th:data-toggle="tooltip" data-placement="top" title="Edit">
-              <i class="material-icons">&#xE254;</i>
-            </a>
-            <a class="delete" th:data-toggle="tooltip" data-placement="top" title="Delete">
-              <i class="material-icons">&#xE872;</i>
-            </a>
+            <form th:object="${n}" th:action="@{/updateNote/{id}(id=${n.id})}" method="post">
+              <button type="submit" class="btn btn-info edit" title="Edit" >
+                <i class="material-icons">&#xE254;</i>
+              </button>
+            </form>
+            <form th:action="@{/deleteNote/{id}(id=${n.id})}" method="post">
+              <button type="submit" class="btn btn-danger delete" title="Delete">
+                <i class="material-icons">&#xE872;</i>
+              </button>
+            </form>
           </td>
+
         </tr>
         </tbody>
-
       </table>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add new note</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form method="post", th:action="@{/saveNote}">
+        <input type ="text"placeholder="enter title for note" name="title" class="form-control">
+                <br>
+            <select class="form-control">
+              <option value="0">Choose category</option>
+              <option th:each="c:${categories}" th:value="${c.id}" th:text="${c.name}"></option>
+            </select>
+          <br>
+        <input type ="text"placeholder="enter description" name="content" class="form-control">
+          <br>
+          <button type="submit" class="btn btn-info" style="object-position: right">Add</button>
+
+        </form>
+      </div>
     </div>
   </div>
 </div>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 <script>
-  $(document).ready(function () {
-    $('[data-toggle="tooltip"]').tooltip();
-
-    $(".add-new").click(function () {
-      $(this).attr("disabled", "disabled");
-      var index = $("table tbody tr:last-child").index();
-      var row = '<tr>' +
-              '<td><input type="text" class="form-control" name="title" id="title"></td>' +
-              '<td><input type="text" class="form-control" name="date" id="date"></td>' +
-              '<td><input type="text" class="form-control" name="category" id="category"></td>' +
-              '<td><input type="text" class="form-control" name="descript" id="descript"></td>' +
-              '<td>' +
-              '<a class="add" th:data-toggle="tooltip" data-placement="top" title="Add">' +
-              '<i class="material-icons">&#xE03B;</i>' +
-              '</a>' +
-              '<a class="edit" th:data-toggle="tooltip" data-placement="top" title="Edit">' +
-              '<i class="material-icons">&#xE254;</i>' +
-              '</a>' +
-              '<a class="delete" th:data-toggle="tooltip" data-placement="top" title="Delete">' +
-              '<i class="material-icons">&#xE872;</i>' +
-              '</a>' +
-              '</td>' +
-              '</tr>';
-      $("table").append(row);
-      $("table tbody tr").eq(index + 1).find(".add, .edit").toggle();
-      $('[data-toggle="tooltip"]').tooltip();
-    });
-    function openPopup() {
-      document.getElementById("popup-form").style.display = "block";
-    }
-
-    function closePopup() {
-      document.getElementById("popup-form").style.display = "none";
-    }
-
-    $(document).on("click", ".add", function () {
-      var empty = false;
-      var input = $(this).parents("tr").find('input[type="text"]');
-      input.each(function () {
-        if (!$(this).val()) {
-          $(this).addClass("error");
-          empty = true;
-        } else {
-          $(this).removeClass("error");
-        }
-      });
-      $(this).parents("tr").find(".error").first().focus();
-      if (!empty) {
-        input.each(function () {
-          $(this).parent("td").html($(this).val());
-        });
-        $(this).parents("tr").find(".add, .edit").toggle();
-        $(".add-new").removeAttr("disabled");
-      }
-      closePopup();
-    });
-
-    $(document).on("click", ".edit", function () {
-      $(this).parents("tr").find("td:not(:last-child)").each(function () {
-        $(this).html('<input type="text" class="form-control" value="' + $(this).text() + '">');
-      });
-      $(this).parents("tr").find(".add, .edit").toggle();
-      $(".add-new").attr("disabled", "disabled");
-    });
-
-    $(document).on("click", ".delete", function () {
-      $(this).parents("tr").remove();
-      $(".add-new").removeAttr("disabled");
-    });
+  $(function () {
+    $("#datetimepicker").datetimepicker({});
   });
+
 </script>
 </body>
 </html>
