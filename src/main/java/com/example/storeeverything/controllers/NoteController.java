@@ -36,6 +36,7 @@ public class NoteController {
     public String sortedView(Model model,@RequestParam(value = "user_id") String user_id, @RequestParam(value = "sort",defaultValue ="title") String sort, @RequestParam(value = "sortDir",defaultValue = "asc") String sortDir){
         List<Category> categories = categoryRepository.findAll();
         model.addAttribute("categories",categories);
+        model.addAttribute("newNote",new Note());
 
 
         List<Note> notes = new ArrayList();
@@ -95,8 +96,8 @@ public class NoteController {
     }
 
     @GetMapping("/addNote")
-    public  String addNote(){
-        return "addnewnote";
+    public  void addNote(Model model){
+        model.addAttribute("newNote",new Note());
     }
 
     @PostMapping("/saveNote")
