@@ -155,11 +155,16 @@
     <div class="table-wrapper">
       <div class="table-category">
       <div class="row">
-        <div class="col-sm-8">
+        <div class="col-sm-4">
         </div>
         <div class="col-sm-4">
           <button type="button" class="btn btn-info add-new-category" data-toggle="modal" data-target="#ModalCat">
             <i class="fa fa-plus"></i> Add Category
+          </button>
+        </div>
+        <div class="col-sm-4">
+          <button type="button" class="btn btn-info add-new-category" data-toggle="modal" data-target="#ModalCat">
+            <i class="fa fa-plus"></i> Delete Category
           </button>
         </div>
       </div>
@@ -228,8 +233,8 @@
                 <br>
           <div class="catSelect" th:action="@{/categories}">
             <select class="form-control">
-              <option value="0">Choose category</option>
-              <option th:each="c:${categories}" th:value="${c.id}" th:text="${c.getName()}">
+              <option value="*">Choose category</option>
+              <option th:each="c:${categories}" th:value="${c.id}" th:text="${categoriesName[c.id]}">
               </option>
             </select>
           </div>
@@ -253,10 +258,10 @@
         </button>
       </div>
       <div class="modal-body">
-        <form method="post", th:action="@{/saveCategory}">
-          <input type ="text"placeholder="enter name of category" name="title" class="form-control" th-field="*{name}">
+        <form method="post" th:action="@{/saveCategory}">
+          <input type ="text" placeholder="enter name of category" name="name" class="form-control">
           <br>
-          <button type="submit" class="btn btn-info" style="object-position: right">Save Category</button>
+          <button type="submit" class="btn btn-info" style="object-position: right" >Save Category</button>
 
         </form>
       </div>

@@ -9,8 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Controller
 public class CategoryController {
@@ -34,7 +33,17 @@ public class CategoryController {
         else {
             categories = categoryRepository.findAll(Sort.by(Sort.Direction.DESC,"name"));
         }
+        Map<String, String> categoryNames = new HashMap<>();
+
+        for (Category category : categories) {
+            Category savedCategory = categoryRepository.findCategoryById(category.getId());
+            String categoryName = (savedCategory != null) ? savedCategory.getName() : "";
+            categoryNames.put(category.getId(), categoryName);
+        }
+
+
         model.addAttribute("categories",categories);
+        model.addAttribute("categoriesName", categoryNames);
         model.addAttribute("sortDir",sortDir);
         String checkDirection = sortDir.equals("asc") ?"desc":"asc";
         model.addAttribute("checkDirection",checkDirection);
@@ -46,9 +55,10 @@ public class CategoryController {
     }
 
     @PostMapping("/saveCategory")
-    public String saveCategory(@ModelAttribute Category category){
-        categoryRepository.save(category);
-        return "redirect:/";
+    public String saveCategory(@RequestParam("name") String name){
+        String id = UUID.randomUUID().toString();
+        categoryRepository.save(new Category(id,name));
+        return "redirect:/categories";
     }
 
 //    @RequestMapping("/updateCategory/{id}")
