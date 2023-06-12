@@ -34,6 +34,10 @@ public class NoteController {
 
     @GetMapping("/notes/")
     public String sortedView(Model model,@RequestParam(value = "user_id") String user_id, @RequestParam(value = "sort",defaultValue ="title") String sort, @RequestParam(value = "sortDir",defaultValue = "asc") String sortDir){
+        List<Category> categories = categoryRepository.findAll();
+        model.addAttribute("categories",categories);
+        model.addAttribute("newNote",new Note());
+
 
         List<Note> notes = new ArrayList();
         if(sort.equals("title")) {
@@ -92,14 +96,14 @@ public class NoteController {
     }
 
     @GetMapping("/addNote")
-    public  String addNote(){
-        return "addnewnote";
+    public  void addNote(Model model){
+        model.addAttribute("newNote",new Note());
     }
 
     @PostMapping("/saveNote")
     public String savenote(@ModelAttribute Note note){
 
-        //TODO
+        //TODO NOT SEING CHOOSEN CATEGORY
         if(note.getCategory() == null){
             note.setCategory(categoryRepository.findCategoryByName("Home"));
         }
@@ -112,11 +116,11 @@ public class NoteController {
         return "redirect:/";
     }
 
-    @PostMapping ("/updateNote/{id}")
-    public String updateNote(@PathVariable("id") String id,Model model){
+    @RequestMapping ("/updateNote/{id}")
+    @ResponseBody
+    public Note updateNote(@PathVariable("id") String id,Model model){
         Note returnedNote = noteRepository.findNoteById(id);
-        model.addAttribute("any",returnedNote);
-        return "redirect:/";
+        return returnedNote;
 
     }
     @PostMapping("/deleteNote/{id}")
