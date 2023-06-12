@@ -20,7 +20,7 @@ public class CategoryController {
     @GetMapping("/categories")
     public String categories(Model model){
        model.addAttribute("cat", sortedCategories(model,"asc"));
-       return "redirect:/";
+       return "index1";
     }
 
     @GetMapping("/categories/s/")

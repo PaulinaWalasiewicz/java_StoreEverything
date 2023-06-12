@@ -229,7 +229,7 @@
           <div class="catSelect" th:action="@{/categories}">
             <select class="form-control">
               <option value="0">Choose category</option>
-              <option th:each="c:${categories}" th:value="${c.id}" th:text="${c.name}">
+              <option th:each="c:${categories}" th:value="${c.id}" th:text="${c.getName()}">
               </option>
             </select>
           </div>
