@@ -30,7 +30,7 @@
       box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
     }
 
-    .table-title {
+    .table-title, .table-category {
       padding-bottom: 10px;
       margin: 0 0 10px;
     }
@@ -40,7 +40,7 @@
       font-size: 22px;
     }
 
-    .table-title .add-new {
+    .table-title .add-new, .table-category .add-new-category{
       float: right;
       height: 30px;
       font-weight: bold;
@@ -51,7 +51,7 @@
       line-height: 13px;
     }
 
-    .table-title .add-new i {
+    .table-title .add-new i , .table-category .add-new-category i {
       margin-right: 4px;
     }
 
@@ -153,16 +153,26 @@
 <div class="container-lg">
   <div class="table-responsive">
     <div class="table-wrapper">
+      <div class="table-category">
+      <div class="row">
+        <div class="col-sm-8">
+        </div>
+        <div class="col-sm-4">
+          <button type="button" class="btn btn-info add-new-category" data-toggle="modal" data-target="#ModalCat">
+            <i class="fa fa-plus"></i> Add Category
+          </button>
+        </div>
+      </div>
+      </div>
       <div class="table-title">
 
         <div class="row">
           <div class="col-sm-8">
             <h2><b>Notes</b></h2>
           </div>
-
           <div class="col-sm-4">
             <button type="button" class="btn btn-info add-new" data-toggle="modal" data-target="#myModal">
-              <i class="fa fa-plus"></i> Add New
+              <i class="fa fa-plus"></i> Add Note
             </button>
 
           </div>
@@ -216,14 +226,37 @@
         <form method="post", th:action="@{/saveNote}">
         <input type ="text"placeholder="enter title for note" name="title" class="form-control">
                 <br>
+          <div class="catSelect" th:action="@{/categories}">
             <select class="form-control">
               <option value="0">Choose category</option>
-              <option th:each="c:${categories}" th:value="${c.id}" th:text="${c.name}"></option>
+              <option th:each="c:${categories}" th:value="${c.id}" th:text="${c.name}">
+              </option>
             </select>
+          </div>
           <br>
         <input type ="text"placeholder="enter description" name="content" class="form-control">
           <br>
           <button type="submit" class="btn btn-info" style="object-position: right">Add</button>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="ModalCat" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ModalLabel">Add new category</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form method="post", th:action="@{/saveCategory}">
+          <input type ="text"placeholder="enter name of category" name="title" class="form-control" th-field="*{name}">
+          <br>
+          <button type="submit" class="btn btn-info" style="object-position: right">Save Category</button>
 
         </form>
       </div>

@@ -19,7 +19,8 @@ public class CategoryController {
 
     @GetMapping("/categories")
     public String categories(Model model){
-        return sortedCategories(model,"asc");
+       model.addAttribute("cat", sortedCategories(model,"asc"));
+       return "redirect:/";
     }
 
     @GetMapping("/categories/s/")
@@ -41,13 +42,13 @@ public class CategoryController {
     }
     @GetMapping("/addCategory")
     public  String addCategory(){
-        return "addnewcategory";
+        return "index1";
     }
 
     @PostMapping("/saveCategory")
     public String saveCategory(@ModelAttribute Category category){
         categoryRepository.save(category);
-        return "redirect:/categories";
+        return "redirect:/";
     }
 
 //    @RequestMapping("/updateCategory/{id}")
