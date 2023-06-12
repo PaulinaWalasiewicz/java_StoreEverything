@@ -185,7 +185,7 @@
         <tbody>
         <tr th:each="n:${any}">
           <td th:text="${n.title}"></td>
-          <td th:text="${n.createdAt}"></td>
+          <td th:text="${#temporals.format(n.createdAt, 'yyyy-MM-dd HH:mm')}"></td>
           <td th:text="${n.category.name}"></td>
           <td th:text="${n.content}"></td>
           <td>
@@ -270,7 +270,7 @@
           <br>
           <th>Link<input type ="text"placeholder="enter link" name="link" id="linkEdit" class="form-control"></th>
           <br>
-          <th>Created at <input type ="datetime-local"placeholder="enter date" id="dateEdit" name="createdAt"></th></tr>
+          <th>Created at <input type ="datetime-local"placeholder="dd-mm-yyyy hh:mm" id="dateEdit" name="createdAt"></th></tr>
           <button type="submit" class="btn btn-info" style="object-position: right">Update</button>
 
         </form>
