@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script type="text/javascript" src="../static/main.js" th:src="@{/main.js}"></script>
@@ -157,6 +157,17 @@
     </style>
 </head>
 <body>
+<span sec:authorize="isAuthenticated()">
+    <form th:action="@{/logout}" method="post">
+        <input type="submit" value="Sing Out">
+    </form>
+        <h1 sec:authorize="isAuthenticated()">Hello <span sec:authentication="name"></span> </h1>
+</span>
+<span sec:authorize="!isAuthenticated()">
+    <form th:action="@{/login}" method="post">
+        <input type="submit" value="Log In">
+    </form>
+</span>
 <div class="container-lg">
     <div class="table-responsive">
         <div class="table-wrapper">
@@ -190,7 +201,7 @@
                 <tr th:each="n:${any}">
                     <td th:text="${n.title}"></td>
                     <td th:text="${#temporals.format(n.createdAt, 'yyyy-MM-dd HH:mm')}"></td>
-                    <td th:text="${n.category.name}"></td>
+                    <td th:text="${n.category}"></td>
                     <td th:text="${n.content}"></td>
                     <td>
                         <a th:href="${n.link}" th:text="${n.link}"></a>

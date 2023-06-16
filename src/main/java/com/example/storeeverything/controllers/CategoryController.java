@@ -2,7 +2,6 @@ package com.example.storeeverything.controllers;
 
 import com.example.storeeverything.Repository.CategoryRepository;
 import com.example.storeeverything.data.Category;
-import com.sun.source.tree.SynchronizedTree;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
