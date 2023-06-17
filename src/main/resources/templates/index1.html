@@ -193,9 +193,9 @@
             <table class="table table-bordered">
                 <thead>
                 <tr>
-                    <th><a th:href="@{'/notes/?user_id=1&sort=title&sortDir='+${checkDirection}}">Title</a></th>
-                    <th><a th:href="@{'/notes/?user_id=1&sort=date&sortDir='+${checkDirection}}">Date</a></th>
-                    <th><a th:href="@{'/notes/?user_id=1&sort=category&sortDir='+${checkDirection}}">Category</a></th>
+                    <th><a th:href="@{'/notes/?user_id='+ ${currentUserId} +'&sort=title&sortDir='+${checkDirection}}">Title</a></th>
+                    <th><a th:href="@{'/notes/?user_id='+ ${currentUserId} +'&sort=date&sortDir='+${checkDirection}}">Date</a></th>
+                    <th><a th:href="@{'/notes/?user_id='+ ${currentUserId} +'&sort=category&sortDir='+${checkDirection}}">Category</a></th>
                     <th>Description</th>
                     <th>Link</th>
                     <th>Actions</th>

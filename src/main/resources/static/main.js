@@ -1,5 +1,5 @@
 $('document').ready(function(){
-debugger;
+
     $('.table #editButton').on('click',function (event){
         event.preventDefault();
 

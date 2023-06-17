@@ -4,6 +4,9 @@ import com.example.storeeverything.Repository.NoteRepository;
 import com.example.storeeverything.Repository.UserRepository;
 import com.example.storeeverything.data.Category;
 import com.example.storeeverything.data.Note;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -28,23 +31,85 @@ public class NoteController {
     UserRepository userRepository;
 
 
-    private String GetUserID(){
+    private String GetUserID(Model model){
         Authentication authentication= SecurityContextHolder.getContext().getAuthentication();
         String current_user_name= authentication.getName();
         String currentUserID= userRepository.findUserByUsername(current_user_name).getId();
+        model.addAttribute("currentUserId",currentUserID);
         return  currentUserID;
     }
     @GetMapping("/")
-    public String index(Model model){
+    public String index(Model model,  HttpServletRequest request, HttpServletResponse response){
 
-        String currentUserID= GetUserID();
-        return sortedView(model,currentUserID,"date","asc");
+        String currentUserID= GetUserID(model);
+        String sortDir=null;
+        String sortType=null;
+
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("sortDirection")) {
+                    sortDir = cookie.getValue();
+
+                }
+                if (cookie.getName().equals("sortType")) {
+                    sortType = cookie.getValue();
+                }
+
+
+            }
+        }
+
+        if (sortDir == null ){sortDir = "asc";}
+
+        if (sortType == null) {
+            // If the sort direction is still null, set a default value
+            sortType = "date";
+        }
+        return sortedView(model,request,response,currentUserID,sortType,sortDir);
     }
 
 
 
     @GetMapping("/notes/")
-    public String sortedView(Model model,@RequestParam(value = "user_id") String user_id, @RequestParam(value = "sort",defaultValue ="title") String sort, @RequestParam(value = "sortDir",defaultValue = "asc") String sortDir){
+    public String sortedView(Model model, HttpServletRequest request, HttpServletResponse response, @RequestParam(value = "user_id") String user_id, @RequestParam(value = "sort",defaultValue ="title") String sort, @RequestParam(value = "sortDir",defaultValue = "asc") String sortDir){
+
+
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("sortDirection")) {
+                    // Change the value of the cookie
+                    cookie.setMaxAge(0);
+
+                    response.addCookie(cookie);
+                }
+            }
+        }
+
+            // Set the sorting direction in a cookie
+            Cookie cookie_dir = new Cookie("sortDirection", sortDir);
+            cookie_dir.setMaxAge(86400); // Cookie expiration time (in seconds)
+            response.addCookie(cookie_dir);
+
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("sortType")) {
+                    // Change the value of the cookie
+                    cookie.setMaxAge(0);
+                    response.addCookie(cookie);
+               }
+            }
+        }
+
+            // Set the sorting type in a cookie
+            Cookie cookie_dt = new Cookie("sortType", sort);
+            cookie_dt.setMaxAge(86400); // Cookie expiration time (in seconds)
+            response.addCookie(cookie_dt);
+
+
+
+
         List<Category> categories = categoryRepository.findAll();
         model.addAttribute("categories",categories);
         model.addAttribute("newNote",new Note());
@@ -102,6 +167,7 @@ public class NoteController {
         model.addAttribute("sortDir",sortDir);
         String checkDirection = sortDir.equals("asc") ?"desc":"asc";
         model.addAttribute("checkDirection",checkDirection);
+        model.addAttribute("currentUserId",GetUserID(model));
 
         return "index1";
     }
@@ -112,7 +178,7 @@ public class NoteController {
     }
 
     @PostMapping("/saveNote")
-    public String savenote(@ModelAttribute Note note){
+    public String savenote(Model model,@ModelAttribute Note note){
 
         //TODO NOT SEING CHOOSEN CATEGORY
         if(note.getCategory() == null){
@@ -120,7 +186,7 @@ public class NoteController {
         }
         note.setCreatedAt(LocalDateTime.now());
         if(note.getUser() == null){
-            note.setUser(userRepository.findUserById(GetUserID()));
+            note.setUser(userRepository.findUserById(GetUserID(model)));
         }
 
         noteRepository.save(note);
