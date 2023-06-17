@@ -166,6 +166,9 @@
     <form th:action="@{/logout}" method="post">
         <input type="submit" value="Sing Out">
     </form>
+    <div sec:authorize="hasAuthority('ADMIN')">
+        <a th:href="@{/authorities}">Manage Users</a>
+    </div>
         <h1 sec:authorize="isAuthenticated()">Hello <span sec:authentication="name"></span> </h1>
 
 
