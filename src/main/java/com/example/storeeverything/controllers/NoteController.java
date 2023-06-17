@@ -5,6 +5,9 @@ import com.example.storeeverything.Repository.UserRepository;
 import com.example.storeeverything.data.Category;
 import com.example.storeeverything.data.Note;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -24,9 +27,18 @@ public class NoteController {
     @Autowired
     UserRepository userRepository;
 
+
+    private String GetUserID(){
+        Authentication authentication= SecurityContextHolder.getContext().getAuthentication();
+        String current_user_name= authentication.getName();
+        String currentUserID= userRepository.findUserByUsername(current_user_name).getId();
+        return  currentUserID;
+    }
     @GetMapping("/")
     public String index(Model model){
-        return sortedView(model,"1","date","asc");
+
+        String currentUserID= GetUserID();
+        return sortedView(model,currentUserID,"date","asc");
     }
 
 
@@ -108,7 +120,7 @@ public class NoteController {
         }
         note.setCreatedAt(LocalDateTime.now());
         if(note.getUser() == null){
-            note.setUser(userRepository.findUserById("1"));
+            note.setUser(userRepository.findUserById(GetUserID()));
         }
 
         noteRepository.save(note);
