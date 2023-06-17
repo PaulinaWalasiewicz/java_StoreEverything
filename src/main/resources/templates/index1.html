@@ -157,17 +157,18 @@
     </style>
 </head>
 <body>
-<span sec:authorize="isAuthenticated()">
-    <form th:action="@{/logout}" method="post">
-        <input type="submit" value="Sing Out">
-    </form>
-        <h1 sec:authorize="isAuthenticated()">Hello <span sec:authentication="name"></span> </h1>
-</span>
 <span sec:authorize="!isAuthenticated()">
     <form th:action="@{/login}" method="post">
         <input type="submit" value="Log In">
     </form>
 </span>
+<span sec:authorize="isAuthenticated()">
+    <form th:action="@{/logout}" method="post">
+        <input type="submit" value="Sing Out">
+    </form>
+        <h1 sec:authorize="isAuthenticated()">Hello <span sec:authentication="name"></span> </h1>
+
+
 <div class="container-lg">
     <div class="table-responsive">
         <div class="table-wrapper">
@@ -312,6 +313,7 @@
         </div>
     </div>
 </div>
+</span>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 <script>
     $(function () {
