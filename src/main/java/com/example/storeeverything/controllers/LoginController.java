@@ -4,6 +4,8 @@ import com.example.storeeverything.Repository.UserRepository;
 import com.example.storeeverything.data.Authorities;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.ui.Model;
 
 import com.example.storeeverything.data.User;
@@ -19,6 +21,8 @@ public class LoginController {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    PasswordEncoder passwordEncoder;
     @Autowired
     AuthoritiesRepository authoritiesRepository;
     @GetMapping("/login")
@@ -42,6 +46,7 @@ public class LoginController {
             model.addAttribute("newUser",user);
             return "/register";
         }
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
 
         Authorities authorities = new Authorities();
