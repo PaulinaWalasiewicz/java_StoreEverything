@@ -47,8 +47,8 @@ public class WebSecurityConfig {
 //        TODO: Resetrict some pages for USER or add some page for ADIMN
         http
                 .authorizeHttpRequests((requests)->requests
-                        .requestMatchers("/register").permitAll()
-                        .requestMatchers("/register/save").permitAll()
+                        .requestMatchers("/register/**").permitAll()
+                        .requestMatchers("/authorities/**").hasAuthority("ADMIN")
                         .anyRequest().authenticated()
                 ).formLogin((form)->form
                         .loginPage("/login")
