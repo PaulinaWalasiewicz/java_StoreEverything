@@ -46,12 +46,13 @@ public class WebSecurityConfig {
 //        TODO: Resetrict some pages for USER or add some page for ADIMN
         http
                 .authorizeHttpRequests((requests)->requests
-                        .requestMatchers("/").permitAll()
+                        .requestMatchers("/register").permitAll()
+                        .requestMatchers("/register/save").permitAll()
                         .anyRequest().authenticated()
                 ).formLogin((form)->form
                         .loginPage("/login")
                         .permitAll()
-                ).logout((logout)->logout.logoutSuccessUrl("/").permitAll());
+                ).logout((logout)->logout.logoutSuccessUrl("/"));
         return  http.build();
     }
     @Bean
