@@ -37,10 +37,10 @@ public class NoteService implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-                System.out.println("-------------CREATE GROCERY ITEMS------\n");
-//        createNotes();
-
-        System.out.println("\n------------SHOW ALL GROCERY ITEMS---\n");
-        showAllNotes();
+//                System.out.println("-------------CREATE GROCERY ITEMS------\n");
+////        createNotes();
+//
+//        System.out.println("\n------------SHOW ALL GROCERY ITEMS---\n");
+//        showAllNotes();
     }
 }
