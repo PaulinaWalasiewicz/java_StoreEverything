@@ -2,6 +2,7 @@ package com.example.storeeverything.controllers;
 import com.example.storeeverything.Repository.AuthoritiesRepository;
 import com.example.storeeverything.Repository.UserRepository;
 import com.example.storeeverything.data.Authorities;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 @Controller
 public class LoginController {
@@ -26,7 +29,18 @@ public class LoginController {
     @Autowired
     AuthoritiesRepository authoritiesRepository;
     @GetMapping("/login")
-    public String login(){return "login";}
+    public String login(){
+
+//        Cookies for sorting direction
+        ServletRequestAttributes attr = (ServletRequestAttributes)
+                RequestContextHolder.currentRequestAttributes();
+        HttpSession session= attr.getRequest().getSession(true); // true == allow create
+
+
+
+        return "login";
+
+    }
 
     @GetMapping("/register")
     public String register(Model model){
