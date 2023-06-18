@@ -56,11 +56,11 @@ public class NoteController {
 //            sort categories ascending or descending
             List<Map.Entry<String, Integer>> sortedEntries = new ArrayList<>(categoryCounts.entrySet());
             if (sortDir.equals("asc")) {
-                Collections.sort(sortedEntries, Comparator.comparing(Map.Entry::getValue));
+                Collections.sort(sortedEntries, Map.Entry.comparingByValue());
 
             }
             else {
-                Collections.sort(sortedEntries, Comparator.comparing(Map.Entry::getValue, Comparator.reverseOrder()));
+                Collections.sort(sortedEntries, Map.Entry.comparingByValue(Comparator.reverseOrder()));
 
             }
 //            get sorted notes based on quantity of categories

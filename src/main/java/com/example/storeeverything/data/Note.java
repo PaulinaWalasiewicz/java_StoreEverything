@@ -25,12 +25,9 @@ public class Note {
     private String title;
     private String content;
 
-
-
     @DBRef
     private Category category;
     @DBRef
     private  User user;
-
 
 }

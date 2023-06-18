@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round|Open+Sans">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.misdeliver.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -104,7 +104,7 @@
       border-radius: 2px;
     }
 
-    table.table .form-control.error {
+    table.table .form-control {
       border-color: #f50000;
     }
 
@@ -138,14 +138,6 @@
 
     input.form-control::placeholder {
       font-style: italic;
-    }
-
-    .input-group-text {
-      border-radius: 0 30rem 30rem 0;
-      border: none;
-    }
-    .datepicker-dropdown {
-      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
     }
   </style>
 </head>
@@ -194,18 +186,20 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="n:${any}">
-          <td th:text="${n.title}"></td>
-          <td th:text="${n.createdAt}"></td>
-          <td th:text="${n.category.name}"></td>
-          <td th:text="${n.content}"></td>
+        <tr th:each="notes:${any}">
+          <td th:text="${notes.title}"></td>
+          <td th:text="${notes.createdAt}"></td>
+          <td th:text="${notes.category?.name}"></td>
+          <td th:text="${notes.content}"></td>
           <td>
-            <form th:object="${n}" th:action="@{/updateNote/{id}(id=${n.id})}" method="post">
+            <form th:object="${notes}" th:action="@{/updateNote/{id}(id=${notes.id})}" method="post">
               <button type="submit" class="btn btn-info edit" title="Edit" >
                 <i class="material-icons">&#xE254;</i>
               </button>
             </form>
-            <form th:action="@{/deleteNote/{id}(id=${n.id})}" method="post">
+            </td>
+          <td>
+            <form th:action="@{/deleteNote/{id}(id=${notes.id})}" method="post">
               <button type="submit" class="btn btn-danger delete" title="Delete">
                 <i class="material-icons">&#xE872;</i>
               </button>
@@ -231,13 +225,13 @@
         <form method="post", th:action="@{/saveNote}">
         <input type ="text"placeholder="enter title for note" name="title" class="form-control">
                 <br>
-          <div class="catSelect" th:action="@{/categories}">
-            <select class="form-control">
+
+            <select class="form-control" name="name">
               <option value="*">Choose category</option>
-              <option th:each="c:${categories}" th:value="${c.id}" th:text="${categoriesName[c.id]}">
+              <option th:each="c:${categories}" th:value="${c}" th:text="${c.getName()}">
               </option>
             </select>
-          </div>
+
           <br>
         <input type ="text"placeholder="enter description" name="content" class="form-control">
           <br>
