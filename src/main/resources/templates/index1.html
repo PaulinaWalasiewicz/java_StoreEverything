@@ -170,7 +170,7 @@
         <a th:href="@{/authorities}">Manage Users</a>
     </div>
         <h1 sec:authorize="isAuthenticated()">Hello <span sec:authentication="name"></span> </h1>
-
+</span>
 
 <div class="container-lg">
     <div class="table-responsive">
@@ -205,7 +205,7 @@
                 <tr th:each="n:${any}">
                     <td th:text="${n.title}"></td>
                     <td th:text="${#temporals.format(n.createdAt, 'yyyy-MM-dd HH:mm')}"></td>
-                    <td th:text="${n.category}"></td>
+                    <td th:text="${n.category.name}"></td>
                     <td th:text="${n.content}"></td>
                     <td>
                         <a th:href="${n.link}" th:text="${n.link}"></a>
@@ -316,7 +316,7 @@
         </div>
     </div>
 </div>
-</span>
+
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 <script>
     $(function () {
