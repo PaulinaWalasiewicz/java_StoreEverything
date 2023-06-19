@@ -14,6 +14,8 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round|Open+Sans">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+
   <style>
     body {
       color: #404E67;
@@ -150,9 +152,29 @@
     .datepicker-dropdown {
       box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
     }
+    .success-icon {
+      color: green;
+      display: none;
+    }
+
+    .error-icon {
+      color: red;
+      display: none;
+    }
   </style>
 </head>
 <body>
+<div id="message-container">
+  <div class="alert alert-success" th:if="${successMessage}">
+    <i class="fa fa-check-circle"></i>
+    <span th:text="${successMessage}"></span>
+  </div>
+  <div class="alert alert-danger" th:if="${errorMessage}">
+    <i class="fa fa-exclamation-circle"></i>
+    <span th:text="${errorMessage}"></span>
+  </div>
+</div>
+
 <div class="table-responsive">
   <div class="table-wrapper">
     <div class="table-title">
@@ -160,6 +182,9 @@
       <div class="row">
         <div class="col-sm-8">
           <h2><b>User Management</b></h2>
+        </div>
+        <div class="col-sm-4 text-right">
+          <a th:href="@{/}" class="btn btn-info">Notes</a>
         </div>
       </div>
     </div>
@@ -173,39 +198,50 @@
         <th>Actions</th>
       </tr>
       </thead>
-      <body>
+      <tbody>
       <tr th:each="auth : ${auth}">
         <td th:text="${auth.user.username}"></td>
         <td th:text="${auth.user.firstName}"></td>
         <td th:text="${auth.user.lastName}"></td>
-        <td th:text="${auth.authority}"></td>
         <td>
-          <form th:action="@{/users/delete}" method="post">
+          <form th:action="@{/authorities/role}" method="post" class="change-role-form">
             <input type="hidden" name="id" th:value="${auth.id}" />
-            <button type="submit">Delete</button>
-          </form>
-
-          <form th:action="@{/authorities/role}" method="post">
-            <input type="hidden" name="id" th:value="${auth.id}" />
-            <select name="role">
+            <select name="role" onchange="this.form.submit()">
               <option th:value="USER" th:text="User" th:selected="${auth.authority == 'USER'}"></option>
               <option th:value="ADMIN" th:text="Admin" th:selected="${auth.authority == 'ADMIN'}"></option>
             </select>
-            <button type="submit">Change Role</button>
+            <div class="alert role-change-alert" role="alert" style="display: none;"></div>
           </form>
-
+        </td>
+        <td>
+          <form th:action="@{/users/delete}" method="post">
+            <input type="hidden" name="id" th:value="${auth.id}" />
+            <button type="submit" class="btn btn-danger delete" title="Delete">
+              <i class="material-icons">&#xE872;</i>
+            </button>
+          </form>
         </td>
       </tr>
-      </body>
+      </tbody>
     </table>
   </div>
 </div>
 </div>
 </body>
-</html>
-</title>
-</head>
-<body>
+<script>
+  $(document).ready(function() {
+    var messageContainer = $('#message-container');
 
-</body>
+    // Check if there is a success or error message
+    if (messageContainer.children().length > 0) {
+      // Show the message container
+      messageContainer.show();
+
+      // Set a timeout to hide the message after 3 seconds (adjust the duration as needed)
+      setTimeout(function() {
+        messageContainer.fadeOut();
+      }, 3000);
+    }
+  });
+</script>
 </html>
