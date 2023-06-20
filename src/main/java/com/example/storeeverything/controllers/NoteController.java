@@ -4,9 +4,11 @@ import com.example.storeeverything.Repository.NoteRepository;
 import com.example.storeeverything.Repository.UserRepository;
 import com.example.storeeverything.data.Category;
 import com.example.storeeverything.data.Note;
+import com.example.storeeverything.data.SortSettings;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -39,73 +41,32 @@ public class NoteController {
         return  currentUserID;
     }
     @GetMapping("/")
-    public String index(Model model,  HttpServletRequest request, HttpServletResponse response){
+    public String index(Model model, HttpSession session){
 
         String currentUserID= GetUserID(model);
-        String sortDir=null;
-        String sortType=null;
 
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if (cookie.getName().equals("sortDirection")) {
-                    sortDir = cookie.getValue();
-
-                }
-                if (cookie.getName().equals("sortType")) {
-                    sortType = cookie.getValue();
-                }
-
-
-            }
+        SortSettings sortSettings = (SortSettings) session.getAttribute("sortSettings");
+        if(sortSettings==null){
+            sortSettings = new SortSettings();
+            sortSettings.setSortField("date");
+            sortSettings.setSortDirection("asc");
+            session.setAttribute("sortSettings", sortSettings);
         }
 
-        if (sortDir == null ){sortDir = "asc";}
+        model.addAttribute("sortSettings", sortSettings);
 
-        if (sortType == null) {
-            // If the sort direction is still null, set a default value
-            sortType = "date";
-        }
-        return sortedView(model,request,response,currentUserID,sortType,sortDir);
+
+        String sortDir= (String) sortSettings.getSortDirection();
+        String sortType= (String) sortSettings.getSortField();
+
+
+        return sortedView(model,session,currentUserID,sortType,sortDir);
     }
 
 
 
     @GetMapping("/notes/")
-    public String sortedView(Model model, HttpServletRequest request, HttpServletResponse response, @RequestParam(value = "user_id") String user_id, @RequestParam(value = "sort",defaultValue ="title") String sort, @RequestParam(value = "sortDir",defaultValue = "asc") String sortDir){
-
-
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if (cookie.getName().equals("sortDirection")) {
-                    // Change the value of the cookie
-                    cookie.setMaxAge(0);
-
-                    response.addCookie(cookie);
-                }
-            }
-        }
-
-            // Set the sorting direction in a cookie
-            Cookie cookie_dir = new Cookie("sortDirection", sortDir);
-            cookie_dir.setMaxAge(86400); // Cookie expiration time (in seconds)
-            response.addCookie(cookie_dir);
-
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if (cookie.getName().equals("sortType")) {
-                    // Change the value of the cookie
-                    cookie.setMaxAge(0);
-                    response.addCookie(cookie);
-               }
-            }
-        }
-
-            // Set the sorting type in a cookie
-            Cookie cookie_dt = new Cookie("sortType", sort);
-            cookie_dt.setMaxAge(86400); // Cookie expiration time (in seconds)
-            response.addCookie(cookie_dt);
+    public String sortedView(Model model, HttpSession session, @RequestParam(value = "user_id") String user_id, @RequestParam(value = "sort",defaultValue ="title") String sort, @RequestParam(value = "sortDir",defaultValue = "asc") String sortDir){
 
 
 
@@ -168,6 +129,14 @@ public class NoteController {
         String checkDirection = sortDir.equals("asc") ?"desc":"asc";
         model.addAttribute("checkDirection",checkDirection);
         model.addAttribute("currentUserId",GetUserID(model));
+
+        SortSettings sortSettings = new SortSettings();
+        sortSettings.setSortField(sort);
+        sortSettings.setSortDirection(sortDir);
+        session.setAttribute("sortSettings", sortSettings);
+
+        // Add the sortSettings object to the model to use it in your view
+        model.addAttribute("sortSettings", sortSettings);
 
         return "index1";
     }
