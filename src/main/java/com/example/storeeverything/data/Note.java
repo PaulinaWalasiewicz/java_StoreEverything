@@ -1,9 +1,7 @@
 package com.example.storeeverything.data;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -21,15 +19,17 @@ public class Note {
     @Id
     private String id;
 
-    @JsonFormat(pattern="dd-MM-yyyy HH:mm")
+    @NotNull
+    @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm")
+    @JsonFormat(pattern = "dd-MM-yyyy HH:mm")
     private LocalDateTime createdAt;
 
     @NonNull
-    @Size(min=3,max=15,message = "Title must be between 3 and 15 characters")
+    @Size(min=3,max=20,message = "Title must be between 3 and 20 characters")
     private String title;
 
     @NotNull
-    @Size(min=1,max = 100,message = "Desctiption must be between 1 and 100 characters")
+    @Size(min = 5, max = 500, message = "Description must be between 5 and 500 characters")
     private String content;
     @DBRef
     private Category category;
@@ -44,5 +44,8 @@ public class Note {
         this.createdAt = createdAt;
     }
 
+
+    @Null(message = "Link must be empty or a valid URL")
+    @Pattern(regexp = "(http|https)://[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,3}(/\\S*)?", message = "Invalid link format")
     private String link;
 }
