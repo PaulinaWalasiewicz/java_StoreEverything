@@ -293,6 +293,7 @@
                     <input type="hidden" name="id" id="idEdit">
                     <th>Title<input type="text" placeholder="enter title for note" name="title" id="titleEdit"
                                     class="form-control">
+                        <div id="titleEditError" class="text-danger"></div>
                     </th>
                     <br><br>
                     <span>
@@ -300,19 +301,28 @@
             <option value="*">select category</option>
             <option th:each="option : ${categories}" th:value="${option.getId()}" th:text="${option.getName()}"></option>
           </select></th>
+            <div id="categroyEditError" class="text-danger"></div>
+
         </span><br>
                     <br>
                     <th>Description <input type="text" placeholder="enter description" name="content" id="contentEdit"
                                            class="form-control"></th>
+                    <div id="contentEditError" class="text-danger"></div>
+
                     <br>
                     <br>
                     <th>Link<input type="text" placeholder="enter link" name="link" id="linkEdit" class="form-control">
+                        <div id="linkEditError" class="text-danger"></div>
+
                     </th>
                     <br>
                     <th>Created at <input type="datetime-local" placeholder="dd-mm-yyyy hh:mm" th:readonly="true" id="dateEdit"
-                                          name="createdAt"></th>
+                                          name="createdAt">
+                        <div id="createdAtEditError" class="text-danger"></div>
+                    </th>
                     </tr>
                     <button type="submit" class="btn btn-info" style="object-position: right">Update</button>
+
 
                 </form>
             </div>

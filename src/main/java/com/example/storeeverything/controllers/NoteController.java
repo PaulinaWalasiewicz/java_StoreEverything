@@ -9,12 +9,16 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -161,17 +165,26 @@ public class NoteController {
     }
 
     @PostMapping("/saveNote")
-    public String savenote(Model model,@ModelAttribute Note note){
-
+    public ResponseEntity<?> savenote(Model model, @Valid @ModelAttribute Note note, BindingResult result) {
+        if (result.hasErrors()) {
+            Map<String, List<String>> errors = new HashMap<>();
+            for (FieldError error : result.getFieldErrors()) {
+                String field = error.getField();
+                String message = error.getDefaultMessage();
+                errors.computeIfAbsent(field, key -> new ArrayList<>()).add(message);
+            }
+            return ResponseEntity.badRequest().body(errors);
+        }
 
         note.setCreatedAt(LocalDateTime.now());
-        if(note.getUser() == null){
+        if (note.getUser() == null) {
             note.setUser(userRepository.findUserById(GetUserID(model)));
         }
 
         noteRepository.save(note);
-        return "redirect:/";
+        return ResponseEntity.ok().build();
     }
+
 
     @RequestMapping ("/updateNote/{id}")
     @ResponseBody

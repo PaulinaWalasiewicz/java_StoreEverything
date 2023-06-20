@@ -45,7 +45,6 @@ public class Note {
     }
 
 
-    @Null(message = "Link must be empty or a valid URL")
-    @Pattern(regexp = "(http|https)://[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,3}(/\\S*)?", message = "Invalid link format")
+    @Pattern(regexp = "^$|(http|https)://[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,3}(/\\S*)?", message = "Invalid link format")
     private String link;
 }
