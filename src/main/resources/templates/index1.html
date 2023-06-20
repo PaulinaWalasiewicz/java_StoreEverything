@@ -163,11 +163,14 @@
     </form>
 </span>
 <span sec:authorize="isAuthenticated()">
-    <form th:action="@{/logout}" method="post">
-        <input type="submit" value="Sing Out">
-    </form>
+
+    <div class="col-sm-4">
+        <form th:action="@{/logout}" method="post">
+            <button type="submit" class="btn btn-danger">Logout</button>
+        </form>
+    </div>
     <div sec:authorize="hasAuthority('ADMIN')">
-        <a th:href="@{/authorities}">Manage Users</a>
+        <a th:href="@{/authorities}" class="btn btn-info">Manage Users</a>
     </div>
         <h1 sec:authorize="isAuthenticated()">Hello <span sec:authentication="name"></span> </h1>
 </span>

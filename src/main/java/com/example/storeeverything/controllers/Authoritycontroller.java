@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Optional;
@@ -39,11 +40,15 @@ public class Authoritycontroller {
     }
 
     @PostMapping("/authorities/role")
-    public String changeUserRole(@RequestParam("id") String id, @RequestParam("role") String role) {
-        Authorities auth = authoritiesRepository.findById(id).get();
-        auth.setAuthority(role);
-        authoritiesRepository.save(auth);
-
+    public String changeUserRole(@RequestParam("id") String id, @RequestParam("role") String role, RedirectAttributes redirectAttributes) {
+        Authorities auth = authoritiesRepository.findById(id).orElse(null);
+        if (auth != null) {
+            auth.setAuthority(role);
+            authoritiesRepository.save(auth);
+            redirectAttributes.addFlashAttribute("successMessage", "User role updated successfully!");
+        } else {
+            redirectAttributes.addFlashAttribute("errorMessage", "Failed to update user role.");
+        }
         return "redirect:/authorities";
     }
 }
