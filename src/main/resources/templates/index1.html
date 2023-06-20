@@ -12,11 +12,8 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css"></script>
-
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
     <style>
         body {
@@ -125,14 +122,6 @@
             font-size: 0.85rem;
         }
 
-        .datepicker {
-            margin-bottom: 3rem;
-        }
-
-        .input-group {
-            border-radius: 30rem;
-        }
-
         input.form-control {
             border-radius: 30rem 0 0 30rem;
             border: none;
@@ -145,15 +134,6 @@
         input.form-control::placeholder {
             font-style: italic;
         }
-
-        .input-group-text {
-            border-radius: 0 30rem 30rem 0;
-            border: none;
-        }
-
-        .datepicker-dropdown {
-            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-        }
     </style>
 </head>
 <body>
@@ -164,15 +144,15 @@
 </span>
 <span sec:authorize="isAuthenticated()">
 
+    <div sec:authorize="hasAuthority('ADMIN')">
+        <a th:href="@{/authorities}" class="btn btn-info">Manage Users</a>
+    </div>
+        <h1 sec:authorize="isAuthenticated()">Hello <span sec:authentication="name"></span> </h1>
     <div class="col-sm-4">
         <form th:action="@{/logout}" method="post">
             <button type="submit" class="btn btn-danger">Logout</button>
         </form>
     </div>
-    <div sec:authorize="hasAuthority('ADMIN')">
-        <a th:href="@{/authorities}" class="btn btn-info">Manage Users</a>
-    </div>
-        <h1 sec:authorize="isAuthenticated()">Hello <span sec:authentication="name"></span> </h1>
 </span>
 
 <div class="container-lg">
@@ -322,9 +302,6 @@
 
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 <script>
-    $(function () {
-        $("#datetimepicker").datetimepicker({});
-    });
 
 </script>
 </body>
