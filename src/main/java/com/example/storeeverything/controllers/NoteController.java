@@ -86,31 +86,44 @@ public class NoteController {
                 notes = noteRepository.findByUserOrderByTitleDesc(user_id);
             }
         } else if (sort.equals("category")) {
-            List<Note> notes_temp = noteRepository.findByUserOrderByCategoryAsc(user_id);
-            Map<String, Integer> categoryCounts = new LinkedHashMap<>();
+            //ALPHABETICALLY
 
-//            count how many times categories are used
-            for (Note n :notes_temp) {
-                categoryCounts.put(String.valueOf(n.getCategory().getName()),categoryCounts.getOrDefault(String.valueOf(n.getCategory().getName()),0)+1);
-            }
-
-//            sort categories ascending or descending
-            List<Map.Entry<String, Integer>> sortedEntries = new ArrayList<>(categoryCounts.entrySet());
             if (sortDir.equals("asc")) {
-                Collections.sort(sortedEntries, Comparator.comparing(Map.Entry::getValue));
-
+                notes = noteRepository.findByUserOrderByCategoryAsc(user_id);
             }
             else {
-                Collections.sort(sortedEntries, Comparator.comparing(Map.Entry::getValue, Comparator.reverseOrder()));
-
+                notes = noteRepository.findByUserOrderByCategoryDesc(user_id);
             }
-//            get sorted notes based on quantity of categories
-            for (Map.Entry<String, Integer> entry : sortedEntries) {
-                String category = entry.getKey();
-                notes.addAll(notes_temp.stream().filter(n-> n.getCategory().getName().equals(category))
-                        .collect(Collectors.toList()));
 
-            }
+
+            //CODE FOR SORTING NOTES ACCORDING TO CATEGORY POPULARITY !!!
+
+
+//            List<Note> notes_temp = noteRepository.findByUserOrderByCategoryAsc(user_id);
+//            Map<String, Integer> categoryCounts = new LinkedHashMap<>();
+//
+////            count how many times categories are used
+//            for (Note n :notes_temp) {
+//                categoryCounts.put(String.valueOf(n.getCategory().getName()),categoryCounts.getOrDefault(String.valueOf(n.getCategory().getName()),0)+1);
+//            }
+//
+////            sort categories ascending or descending
+//            List<Map.Entry<String, Integer>> sortedEntries = new ArrayList<>(categoryCounts.entrySet());
+//            if (sortDir.equals("asc")) {
+//                Collections.sort(sortedEntries, Comparator.comparing(Map.Entry::getValue));
+//
+//            }
+//            else {
+//                Collections.sort(sortedEntries, Comparator.comparing(Map.Entry::getValue, Comparator.reverseOrder()));
+//
+//            }
+////            get sorted notes based on quantity of categories
+//            for (Map.Entry<String, Integer> entry : sortedEntries) {
+//                String category = entry.getKey();
+//                notes.addAll(notes_temp.stream().filter(n-> n.getCategory().getName().equals(category))
+//                        .collect(Collectors.toList()));
+//
+//            }
 
         }
         else if (sort.equals("date")) {

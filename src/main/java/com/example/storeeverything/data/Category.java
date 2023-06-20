@@ -1,6 +1,7 @@
 package com.example.storeeverything.data;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,7 +16,9 @@ public class Category {
     @Id
     private String id;
 
-    @NotEmpty(message = "Name must not be empty")
+
+    @NotEmpty(message = "Name cannot be empty")
+    @Size(min = 3, max = 20, message = "Category name must be between 3 and 20 characters")
     @Pattern(regexp = "^[a-z]+$", message = "Name must be all lowercase letters")
     private String name;
     public Category(String id, String name) {
