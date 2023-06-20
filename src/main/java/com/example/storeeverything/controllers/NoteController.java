@@ -59,6 +59,7 @@ public class NoteController {
         String sortDir= (String) sortSettings.getSortDirection();
         String sortType= (String) sortSettings.getSortField();
 
+        model.addAttribute("newNote",new Note());
 
         return sortedView(model,session,currentUserID,sortType,sortDir);
     }
@@ -162,10 +163,7 @@ public class NoteController {
     @PostMapping("/saveNote")
     public String savenote(Model model,@ModelAttribute Note note){
 
-        //TODO NOT SEING CHOOSEN CATEGORY
-        if(note.getCategory() == null){
-            note.setCategory(categoryRepository.findCategoryByName("Home"));
-        }
+
         note.setCreatedAt(LocalDateTime.now());
         if(note.getUser() == null){
             note.setUser(userRepository.findUserById(GetUserID(model)));
@@ -179,6 +177,7 @@ public class NoteController {
     @ResponseBody
     public Note updateNote(@PathVariable("id") String id,Model model){
         Note returnedNote = noteRepository.findNoteById(id);
+        model.addAttribute("editNote",returnedNote);
         return returnedNote;
 
     }

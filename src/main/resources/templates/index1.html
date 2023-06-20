@@ -255,7 +255,7 @@
                     <span>
                   <th><select class="form-select form-select-lg mb-md-3" name="category" th:field="*{category}">
                     <option value="*">select category</option>
-                    <option th:each="option : ${categories}" th:value="${option}" th:text="${option.getName()}"></option>
+                    <option th:each="option : ${categories}" th:value="${option.getId()}" th:text="${option.getName()}"></option>
                   </select>
 
                     </th></span>
@@ -298,7 +298,7 @@
                     <span>
          <th>Category<select class="form-select form-select-lg mb-md-3" name="category" id="categoryEdit">
             <option value="*">select category</option>
-            <option th:each="option : ${categories}" th:value="${option}" th:text="${option.getName()}"></option>
+            <option th:each="option : ${categories}" th:value="${option.getId()}" th:text="${option.getName()}"></option>
           </select></th>
         </span><br>
                     <br>
@@ -309,7 +309,7 @@
                     <th>Link<input type="text" placeholder="enter link" name="link" id="linkEdit" class="form-control">
                     </th>
                     <br>
-                    <th>Created at <input type="datetime-local" placeholder="dd-mm-yyyy hh:mm" id="dateEdit"
+                    <th>Created at <input type="datetime-local" placeholder="dd-mm-yyyy hh:mm" th:readonly="true" id="dateEdit"
                                           name="createdAt"></th>
                     </tr>
                     <button type="submit" class="btn btn-info" style="object-position: right">Update</button>
