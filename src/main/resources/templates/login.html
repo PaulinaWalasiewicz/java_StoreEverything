@@ -1,20 +1,146 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
+    <meta charset="utf-8">
     <title>Spring Security Example</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round|Open+Sans">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css"></script>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <style>
+        html,body {
+            height: 100%;
+        }
+
+        body.my-login-page {
+            background-color: #f7f9fb;
+            font-size: 14px;
+        }
+
+        .my-login-page .brand {
+            width: 85px;
+            height: 91px;
+            overflow: hidden;
+            border-radius: 50%;
+            margin: 0 auto;
+            margin: 40px auto;
+            box-shadow: 0 0 40px rgba(0,0,0,.05);
+        }
+
+        .my-login-page .brand img {
+            width: 100%;
+        }
+
+        .my-login-page .card-wrapper {
+            width: 400px;
+            margin: 0 auto;
+            margin-top: 10vh;
+        }
+
+        .my-login-page .card {
+            border-color: transparent;
+            box-shadow: 0 0 40px rgba(0,0,0,.05);
+        }
+
+        .my-login-page .card.fat {
+            padding: 10px;
+        }
+
+        .my-login-page .card .card-title {
+            margin-bottom: 30px;
+        }
+
+        .my-login-page .form-control {
+            border-width: 2.3px;
+        }
+
+        .my-login-page .form-group label {
+            width: 100%;
+        }
+
+        .my-login-page .btn.btn-block {
+            padding: 12px 10px;
+        }
+
+        .my-login-page .margin-top20 {
+            margin-top: 20px;
+        }
+
+        .my-login-page .no-margin {
+            margin: 0;
+        }
+
+        .my-login-page .footer {
+            margin: 40px 0;
+            color: #888;
+            text-align: center;
+        }
+        .success-icon {
+            color: green;
+            display: none;
+        }
+
+        .error-icon {
+            color: red;
+            display: none;
+        }
+
+
+    </style>
 </head>
-<body>
-  <div th:if="${param.error}">
-      Ivalid username and password.
-  </div>
-<div th:if="${param.logout}">
-  You have been logout.
+<body class="my-login-page">
+
+<!--<div th:if="${param.error}">-->
+<!--    Ivalid username and password.-->
+<!--</div>-->
+<!--<div th:if="${param.logout}">-->
+<!--    You have been logout.-->
+<!--</div>-->
+<section>
+<div class="alert alert-danger" th:if="${param.error}">
+    <i class="fa fa-exclamation-circle"></i> Ivalid username and password.
 </div>
-<form th:action="@{/login}" method="post">
-  <div><label>User Name: <input type="text" name="username"/></label></div>
-  <div><label>Password: <input type="password" name="password"/></label></div>
-  <div><input type="submit" value="Sign In"/></label></div>
-</form>
-  <span>Don't have an account? <a th:href="@{/register}">Register here</a></span>
+<div class="alert alert-success"  th:if="${param.logout}">
+    <i class="fa fa-check-circle"></i>  You have been logout.
+</div>
+</section>
+<section class="h-100 ">
+    <div class="container h-100">
+        <div class="row justify-content-md-center h-100">
+            <div class="card-wrapper">
+                <div class="card fat">
+                    <div class="card-body">
+                        <h4 class="card-title">Login</h4>
+                        <form method="POST" th:action="@{/login}">
+                            <div class="form-group">
+                                <label for="username">username</label>
+                                <input id="username" type="text" class="form-control" name="username">
+                            </div>
+                            <div class="form-group">
+                                <label for="password">Password</label>
+                                <input id="password" type="password" class="form-control" name="password">
+                            </div>
+                            <div class="form-group no-margin">
+                                <button type="submit" class="btn btn-primary btn-block">
+                                    Login
+                                </button>
+                            </div>
+                            <div class="margin-top20 text-center">
+                                Don't have an account? <a th:href="@{/register}">Register here</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 </body>
 </html>
