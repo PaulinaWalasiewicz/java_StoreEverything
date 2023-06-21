@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Controller
 public class CategoryController {
@@ -40,15 +41,15 @@ public class CategoryController {
     }
     @GetMapping("/addCategory")
     public  String addCategory(){
-        return "addnewcategory";
+        return "index1";
     }
 
     @PostMapping("/saveCategory")
-    public String saveCategory(@ModelAttribute Category category){
-        categoryRepository.save(category);
+    public String saveCategory(@RequestParam("name") String name){
+        String id = UUID.randomUUID().toString();
+        categoryRepository.save(new Category(id,name));
         return "redirect:/categories";
     }
-
 //    @RequestMapping("/updateCategory/{id}")
 //    public String updateCategory(@PathVariable("id") Integer id,Model model){
 //        Category returnedCategory = categoryRepository.findCategoryById(id);
