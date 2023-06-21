@@ -30,7 +30,7 @@
             box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
         }
 
-        .table-title {
+        .table-title, .table-category, .table-filter{
             padding-bottom: 10px;
             margin: 0 0 10px;
         }
@@ -40,7 +40,7 @@
             font-size: 22px;
         }
 
-        .table-title .add-new {
+        .table-title .add-new, .table-category .add-new-category, .delete-category, .filter-category, .filter-date {
             float: right;
             height: 30px;
             font-weight: bold;
@@ -51,12 +51,12 @@
             line-height: 13px;
         }
 
-        .table-title .add-new i {
+        .table-title .add-new i, .table-category .add-new-category i, .delete-category i {
             margin-right: 4px;
         }
 
         table.table {
-            table-layout: fixed;
+            table-layout: auto;
         }
 
         table.table tr th,
@@ -77,7 +77,7 @@
 
         table.table td a {
             cursor: pointer;
-            display: inline-block;
+            /*display: inline-block;*/
             margin: 0 5px;
             min-width: 24px;
         }
@@ -88,6 +88,7 @@
 
         table.table td i {
             font-size: 19px;
+            align-items: center;
         }
 
         table.table td a.add i {
@@ -158,8 +159,39 @@
 <div class="container-lg">
     <div class="table-responsive">
         <div class="table-wrapper">
-            <div class="table-title">
+            <div class="table-category">
+                <div class="row">
 
+                    <div class="col-sm-4">
+                        <button type="button" class="btn btn-info add-new-category" data-toggle="modal" data-target="#ModalCat">
+                            <i class="fa fa-plus"></i> Add Category
+                        </button>
+
+                    </div>
+                    <div class="col-sm-4">
+                        <button type="button" class="btn btn-info delete-category" data-toggle="modal" data-target="#ModalCatDel">
+                            <i class="fa fa-minus"></i> Delete Category
+                        </button>
+
+                    </div>
+                </div>
+            </div>
+            <div class="table-filter">
+                <div class="row">
+                <div class="col-sm-4">
+                    <button type="button" class="btn btn-info filter-category" th:href="@{/filter-category}">
+                        Filter by Category
+                    </button>
+                </div>
+                <div class="col-sm-4">
+                    <button type="button" class="btn btn-info filter-date" data-toggle="modal" data-target="#ModalCat">
+                        Filter by Date
+                    </button>
+
+                </div>
+            </div>
+            </div>
+            <div class="table-title">
                 <div class="row">
                     <div class="col-sm-8">
                         <h2><b>Notes</b></h2>
@@ -188,7 +220,7 @@
                 <tr th:each="n:${any}">
                     <td th:text="${n.title}"></td>
                     <td th:text="${#temporals.format(n.createdAt, 'yyyy-MM-dd HH:mm')}"></td>
-                    <td th:text="${n.category.name}"></td>
+                    <td th:text="${n.category?.name}"></td>
                     <td th:text="${n.content}"></td>
                     <td>
                         <a th:href="${n.link}" th:text="${n.link}"></a>
@@ -253,6 +285,47 @@
                     <br>
                     <button type="submit" class="btn btn-info" style="object-position: right">Add</button>
 
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="ModalCat" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ModalLabelCat">Add new category</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="post" , th:action="@{/saveCategory}">
+                    <input type="text" placeholder="enter name of category" name="name" class="form-control">
+                    <br>
+                    <button type="submit" class="btn btn-info" style="object-position: right">Save Category</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="ModalCatDel" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ModalLabelCatDel">Delete Category</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="post" , th:action="@{/deleteCategory}">
+                    <select class="form-control" id="categoryDropdown" name="categoryId">
+                        <option value="*">select category</option>
+                        <option th:each="option : ${categories}" th:value="${option.getId()}" th:text="${option.getName()}"></option>
+                    </select>
+                    <br>
+                    <button type="submit" class="btn btn-danger" style="object-position: right">Delete Category</button>
                 </form>
             </div>
         </div>
