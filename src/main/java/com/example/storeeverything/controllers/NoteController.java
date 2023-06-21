@@ -159,6 +159,37 @@ public class NoteController {
         return "index1";
     }
 
+    @GetMapping("/filter-category")
+    public String filterByCategory (Model model, HttpSession session, @RequestParam(value = "user_id") String user_id, @RequestParam(value = "sort",defaultValue ="title") String sort, @RequestParam(value = "sortDir",defaultValue = "asc") String sortDir){
+        List<Note> notes_temp = noteRepository.findByUserOrderByCategoryAsc(user_id);
+        List<Note> notes = new ArrayList();
+            Map<String, Integer> categoryCounts = new LinkedHashMap<>();
+
+//            count how many times categories are used
+            for (Note n :notes_temp) {
+                categoryCounts.put(String.valueOf(n.getCategory().getName()),categoryCounts.getOrDefault(String.valueOf(n.getCategory().getName()),0)+1);
+            }
+
+//            sort categories ascending or descending
+            List<Map.Entry<String, Integer>> sortedEntries = new ArrayList<>(categoryCounts.entrySet());
+            if (sortDir.equals("asc")) {
+                Collections.sort(sortedEntries, Comparator.comparing(Map.Entry::getValue));
+
+            }
+            else {
+                Collections.sort(sortedEntries, Comparator.comparing(Map.Entry::getValue, Comparator.reverseOrder()));
+
+            }
+//            get sorted notes based on quantity of categories
+            for (Map.Entry<String, Integer> entry : sortedEntries) {
+                String category = entry.getKey();
+                notes.addAll(notes_temp.stream().filter(n-> n.getCategory().getName().equals(category))
+                        .collect(Collectors.toList()));
+
+            }
+            return "redirect:/";
+    }
+
     @GetMapping("/addNote")
     public  void addNote(Model model){
         model.addAttribute("newNote",new Note());
