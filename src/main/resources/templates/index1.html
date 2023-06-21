@@ -177,19 +177,40 @@
                 </div>
             </div>
             <div class="table-filter">
-                <div class="row">
-                <div class="col-sm-4">
-                    <button type="button" class="btn btn-info filter-category" th:href="@{/filter-category}">
-                        Filter by Category
-                    </button>
-                </div>
-                <div class="col-sm-4">
-                    <button type="button" class="btn btn-info filter-date" data-toggle="modal" data-target="#ModalCat">
-                        Filter by Date
-                    </button>
+<!--                <div class="row">-->
+<!--                <div class="col-sm-4">-->
+<!--                    <button type="button" class="btn btn-info filter-category" th:href="@{/filter-category}">-->
+<!--                        Filter by Category-->
+<!--                    </button>-->
+<!--                </div>-->
+<!--                <div class="col-sm-4">-->
+<!--                    <button type="button" class="btn btn-info filter-date" data-toggle="modal" data-target="#ModalCat">-->
+<!--                        Filter by Date-->
+<!--                    </button>-->
 
+<!--                </div>-->
+<!--            </div>-->
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Filter
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+<!--                        <div class="form-check">-->
+<!--                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" th:href="@{/filter-category}">-->
+<!--                            <label class="form-check-label" for="defaultCheck1">-->
+<!--                                Popular Category-->
+<!--                            </label>-->
+<!--                        </div>-->
+<!--                        <div class="form-check">-->
+<!--                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck2">-->
+<!--                            <label class="form-check-label" for="defaultCheck2">-->
+<!--                                Current date-->
+<!--                            </label>-->
+<!--                        </div>-->
+                        <a class="dropdown-item" th:href="@{'/filter-category?user_id='+ ${currentUserId}}">Popular Category</a>
+                        <a class="dropdown-item" href="#">Current Date</a>
+                    </div>
                 </div>
-            </div>
             </div>
             <div class="table-title">
                 <div class="row">
