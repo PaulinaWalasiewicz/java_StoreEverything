@@ -1,4 +1,66 @@
 $(document).ready(function() {
+    $('form#newNotesave').on('submit', function(event) {
+        debugger
+        event.preventDefault();
+        // Clear previous error messages
+        clearErrorMessages2();
+        formatDateTime2()
+        // Perform your own validation logic here if needed
+
+        // Make an AJAX request to submit the form data
+        $.ajax({
+            url: $(this).attr('action'),
+            method: $(this).attr('method'),
+            data: $(this).serialize(),
+            success: function(response) {
+                // Handle successful submission
+                $('#myModal').modal('hide');
+                location.reload(); // Reload the page
+
+
+            },
+            error: function(xhr, status, error) {
+                if (xhr.status === 400) {
+                    const errors = xhr.responseJSON;
+                    displayErrors2(errors);
+                } else {
+                    // Handle other error scenarios
+                }
+            }
+        });
+
+        // Function to clear all error messages
+        function clearErrorMessages2() {
+            $('#newtitleError').text('');
+            $('#newlinkError').text('');
+            $('#newcontentError').text('');
+            $('#newcategoryError').text('');
+
+        }
+        function formatDateTime2() {
+            const now = new Date();
+
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            return `${year}-${month}-${day}T${hours}:${minutes}`;
+        }
+
+        // Function to display validation errors
+        function displayErrors2(errors) {
+            clearErrorMessages2();
+
+            // Iterate over the errors object and update the corresponding error elements
+            for (let fieldName in errors) {
+                let errorMessage = errors[fieldName];
+                let errorElementId ='new'+ fieldName + 'Error';
+                $('#' + errorElementId).text(errorMessage);
+            }
+        }
+    });
+
     $('.table #editButton').on('click', function(event) {
         event.preventDefault();
         const href = $(this).attr('href');
@@ -61,36 +123,40 @@ $(document).ready(function() {
 
 
     // Handle form submission and validation errors
-    $('form').on('submit', function(event) {
-        event.preventDefault();
-    debugger
-        // Clear previous error messages
-        clearErrorMessages();
+    $('form#EditModalNote').on('submit', function(event) {
+        debugger
+        if (event.currentTarget.id == 'newNotesave') {
+            newNote(event)
+        } else {
+            event.preventDefault();
 
-        // Perform your own validation logic here if needed
+            // Clear previous error messages
+            clearErrorMessages();
 
-        // Make an AJAX request to submit the form data
-        $.ajax({
-            url: $(this).attr('action'),
-            method: $(this).attr('method'),
-            data: $(this).serialize(),
-            success: function(response) {
-                // Handle successful submission
-                $('#EditModal').modal('hide');
-                location.reload(); // Reload the page
+            // Perform your own validation logic here if needed
+
+            // Make an AJAX request to submit the form data
+            $.ajax({
+                url: $(this).attr('action'),
+                method: $(this).attr('method'),
+                data: $(this).serialize(),
+                success: function (response) {
+                    // Handle successful submission
+                    $('#EditModal').modal('hide');
+                    location.reload(); // Reload the page
 
 
-            },
-            error: function(xhr, status, error) {
-                if (xhr.status === 400) {
-                    const errors = xhr.responseJSON;
-                    displayErrors(errors);
-                } else {
-                    // Handle other error scenarios
+                },
+                error: function (xhr, status, error) {
+                    if (xhr.status === 400) {
+                        const errors = xhr.responseJSON;
+                        displayErrors(errors);
+                    } else {
+                        // Handle other error scenarios
+                    }
                 }
-            }
-        });
+            });
+        }
     });
 });
-
 

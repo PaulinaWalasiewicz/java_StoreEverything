@@ -215,6 +215,46 @@ public class NoteController {
         noteRepository.save(note);
         return ResponseEntity.ok().build();
     }
+    @PostMapping("/saveNotenew")
+    public ResponseEntity<?> savenotenew(Model model, @Valid @ModelAttribute("newNote") Note note, BindingResult result) {
+        if (result.hasErrors()) {
+            Map<String, List<String>> errors = new HashMap<>();
+            boolean hasNonCreatedAtErrors = false;
+
+            for (FieldError error : result.getFieldErrors()) {
+                String field = error.getField();
+                if (field.equals("createdAt")) {
+                    note.setCreatedAt(LocalDateTime.now());
+                } else {
+                    String message = error.getDefaultMessage();
+                    errors.computeIfAbsent(field, key -> new ArrayList<>()).add(message);
+                    hasNonCreatedAtErrors = true;
+                }
+            }
+
+            if (hasNonCreatedAtErrors) {
+                return ResponseEntity.badRequest().body(errors);
+            } else {
+                note.setCreatedAt(LocalDateTime.now());
+                if (note.getUser() == null) {
+                    note.setUser(userRepository.findUserById(GetUserID(model)));
+                }
+
+                noteRepository.save(note);
+                return ResponseEntity.ok().build();
+            }
+        }
+
+
+        note.setCreatedAt(LocalDateTime.now());
+        if (note.getUser() == null) {
+            note.setUser(userRepository.findUserById(GetUserID(model)));
+        }
+
+        noteRepository.save(note);
+        return ResponseEntity.ok().build();
+    }
+
 
 
     @RequestMapping ("/updateNote/{id}")

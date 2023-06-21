@@ -258,9 +258,10 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form method="post" , th:action="@{/saveNote}" th:object="${newNote}">
+                <form method="post" id="newNotesave" , th:action="@{/saveNotenew}" th:object="${newNote}">
                     <input type="text" placeholder="enter title for note" name="title" class="form-control"
                            th:field="*{title}">
+                    <div id="newtitleError" class="text-danger"></div>
                     <span th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Title Error</span>
                     <br>
                     <br>
@@ -269,6 +270,7 @@
                     <option value="*">select category</option>
                     <option th:each="option : ${categories}" th:value="${option.getId()}" th:text="${option.getName()}"></option>
                   </select>
+                    <div id="newcategoryError" class="text-danger"></div>
 
                     </th></span>
 
@@ -277,10 +279,11 @@
                     <input type="text" placeholder="enter description" name="content" class="form-control"
                            th:field="*{content}">
                     <span th:if="${#fields.hasErrors('content')}" th:errors="*{content}">Content Error</span>
-
+                    <div id="newcontentError" class="text-danger"></div>
                     <br><br>
                     <input type="text" placeholder="enter link" name="link" class="form-control" th:field="*{link}">
                     <span th:if="${#fields.hasErrors('link')}" th:errors="*{link}">Link Error</span>
+                    <div id="newlinkError" class="text-danger"></div>
 
                     <br>
                     <button type="submit" class="btn btn-info" style="object-position: right">Add</button>
@@ -342,7 +345,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form method="post" th:action="@{/saveNote}">
+                <form method="post" id="EditModalNote" th:action="@{/saveNote}">
                     <input type="hidden" name="id" id="idEdit">
                     <th>Title<input type="text" placeholder="enter title for note" name="title" id="titleEdit"
                                     class="form-control">
